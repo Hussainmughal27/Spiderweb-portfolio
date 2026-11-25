@@ -1,0 +1,2279 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hussain — Web Developer &amp; Web Designer</title>
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+                    },
+                    colors: {
+                        bg: 'var(--bg)',
+                        surface: 'var(--surface)',
+                        surface2: 'var(--surface2)',
+                        border: 'var(--border)',
+                        border2: 'var(--border2)',
+                        accent: 'var(--accent)',
+                        chip: 'var(--chip)',
+                        primary: 'var(--text)',
+                        muted: 'var(--muted)',
+                        dim: 'var(--dim)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --bg: #070000;
+            --surface: #130203;
+            --surface2: #1D0405;
+            --border: #3B070A;
+            --border2: #540A0E;
+            --accent: #FF0000;
+            --chip: #8A0000;
+            --text: #FFFFFF;
+            --muted: #F5B5B8;
+            --dim: #B86569;
+            --grid-dot: rgba(255, 0, 0, 0.14);
+            --web-stroke: rgba(255, 0, 0, 0.18);
+            --web-node: rgba(255, 0, 0, 0.34);
+            --scroll-track: #070000;
+            --scroll-thumb: #4D0609;
+            --scroll-thumb-hover: #FF0000;
+        }
+
+        [data-mode="bw"] {
+            --bg: #050505;
+            --surface: #111111;
+            --surface2: #1A1A1A;
+            --border: #2E2E2E;
+            --border2: #3D3D3D;
+            --accent: #FFFFFF;
+            --chip: #222222;
+            --text: #FFFFFF;
+            --muted: #B8B8B8;
+            --dim: #7A7A7A;
+            --grid-dot: rgba(255, 255, 255, 0.09);
+            --web-stroke: rgba(255, 255, 255, 0.11);
+            --web-node: rgba(255, 255, 255, 0.22);
+            --scroll-track: #050505;
+            --scroll-thumb: #333333;
+            --scroll-thumb-hover: #FFFFFF;
+        }
+
+        [data-mode="red"] {
+            --bg: #070000;
+            --surface: #130203;
+            --surface2: #1D0405;
+            --border: #3B070A;
+            --border2: #540A0E;
+            --accent: #FF0000;
+            --chip: #8A0000;
+            --text: #FFFFFF;
+            --muted: #F5B5B8;
+            --dim: #B86569;
+            --grid-dot: rgba(255, 0, 0, 0.14);
+            --web-stroke: rgba(255, 0, 0, 0.18);
+            --web-node: rgba(255, 0, 0, 0.34);
+            --scroll-track: #070000;
+            --scroll-thumb: #4D0609;
+            --scroll-thumb-hover: #FF0000;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', system-ui, sans-serif;
+            overflow-x: hidden;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.25s ease, color 0.25s ease;
+        }
+
+        @media (pointer: fine) {
+            html, body, a, button, [role="button"], input, textarea, select, label {
+                cursor: none !important;
+            }
+        }
+
+        /* Spider Web Background Layer */
+        #spider-web-bg {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Delicate Silk Web Threads Spun Behind Text & Cards */
+        #silk-weave-layer {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 4;
+            pointer-events: none;
+        }
+
+        /* Mode Switch Controls */
+        .theme-choice {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 18px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--surface);
+            color: var(--text);
+            font-size: 13px;
+            font-weight: 500;
+            transition: 0.2s ease;
+        }
+        .theme-choice:hover, .theme-choice[aria-pressed="true"] {
+            border-color: var(--accent);
+            background: var(--surface2);
+            box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 22%, transparent);
+        }
+        .theme-swatch {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: inline-block;
+            border: 1.5px solid rgba(255, 255, 255, 0.45);
+        }
+        .theme-swatch-red-black {
+            background: linear-gradient(135deg, #FF0000 50%, #050505 50%);
+        }
+        .theme-swatch-bw {
+            background: linear-gradient(135deg, #FFFFFF 50%, #050505 50%);
+        }
+
+        /* Social / Contact Cards */
+        .social-profile-card {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 15px 16px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: var(--surface);
+            color: var(--text);
+            text-decoration: none;
+            transition: 0.2s ease;
+        }
+        .social-profile-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            background: var(--surface2);
+        }
+        .social-profile-icon {
+            display: grid;
+            place-items: center;
+            flex: 0 0 40px;
+            width: 40px;
+            height: 40px;
+            border-radius: 11px;
+            color: #FFFFFF;
+        }
+        [data-mode="bw"] .social-profile-icon {
+            background: #1B1B1B;
+            border: 1px solid #3A3A3A;
+            color: #FFFFFF;
+        }
+        [data-mode="red"] .social-profile-icon {
+            background: #280204;
+            border: 1px solid #FF0000;
+            color: #FF0000;
+        }
+        .social-profile-card strong {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .social-profile-card small {
+            display: block;
+            margin-top: 3px;
+            color: var(--muted);
+            font-size: 11px;
+            overflow-wrap: anywhere;
+        }
+        .social-profile-arrow {
+            margin-left: auto;
+            color: var(--accent);
+            font-size: 18px;
+        }
+
+        .text-accent { color: var(--accent) !important; }
+        .bg-accent { background-color: var(--accent) !important; }
+        .border-accent { border-color: var(--accent) !important; }
+        .hover\:text-accent:hover { color: var(--accent) !important; }
+        .hover\:border-accent:hover { border-color: var(--accent) !important; }
+
+        .btn-accent {
+            background-color: var(--accent);
+            color: #FFFFFF;
+        }
+        [data-mode="bw"] .btn-accent {
+            background-color: #FFFFFF;
+            color: #050505;
+        }
+        [data-mode="red"] .btn-accent {
+            background-color: #FF0000;
+            color: #FFFFFF;
+        }
+
+        /* Subtle background dot grid */
+        .bg-grid {
+            background-image: radial-gradient(var(--grid-dot) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* Build hidden state before mini spiders assemble layers */
+        [data-swarm-state="hidden"] {
+            clip-path: inset(0 100% 100% 0) !important;
+            opacity: 0 !important;
+        }
+
+        [data-swarm-state="building"] {
+            opacity: 1 !important;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--scroll-track);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--scroll-thumb);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--scroll-thumb-hover);
+        }
+
+        /* Shimmer animation for SEO OG card */
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .og-shimmer {
+            background: linear-gradient(110deg, rgba(255,0,0,0.16) 30%, rgba(255,255,255,0.45) 50%, rgba(255,0,0,0.16) 70%);
+            background-size: 250% 100%;
+            animation: shimmer 3.5s linear infinite;
+        }
+
+        /* Nav hide transition */
+        #main-nav {
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.25s ease;
+        }
+        #main-nav.nav-hidden {
+            transform: translateY(-110%);
+        }
+
+        /* Custom Spider Cursor + Mini Spiders Layer */
+        #spider-cursor-layer {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 10002;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .spider-actor {
+            position: fixed;
+            left: 0;
+            top: 0;
+            pointer-events: none;
+            will-change: transform;
+            transform-origin: center center;
+        }
+    </style>
+</head>
+<body data-mode="red" class="bg-bg text-primary selection:bg-accent/30 selection:text-white">
+
+    <!-- ==================== SPIDER WEB BACKGROUND CANVAS ==================== -->
+    <canvas id="spider-web-bg" aria-hidden="true"></canvas>
+
+    <!-- ==================== DELICATE SILK WEAVE BEHIND TEXT & CARDS ==================== -->
+    <canvas id="silk-weave-layer" aria-hidden="true"></canvas>
+
+    <!-- ==================== PRELOADER OVERLAY ==================== -->
+    <div id="swarm-preloader" aria-hidden="true" class="fixed inset-0 z-[9997] bg-bg flex flex-col items-center justify-center transition-opacity duration-500">
+        <div class="w-14 h-14 rounded-2xl bg-surface border border-border flex items-center justify-center">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                <circle cx="14" cy="15" r="5" fill="var(--accent)" />
+                <circle cx="14" cy="9.5" r="3" fill="var(--text)" />
+                <path d="M9.5 12L4.5 7.5M9 14.5L3 14.5M9.8 17L4.5 21.5M11.5 19L8 24M18.5 12L23.5 7.5M19 14.5L25 14.5M18.2 17L23.5 21.5M16.5 19L20 24" stroke="var(--text)" stroke-width="1.6" stroke-linecap="round" />
+            </svg>
+        </div>
+        <p class="mt-4 font-mono text-xs text-muted tracking-tight">Mini spiders spinning Hussain’s portfolio…</p>
+    </div>
+
+    <!-- ==================== BUILD BOXES & RULERS CANVAS OVERLAY ==================== -->
+    <canvas id="swarm-canvas" aria-hidden="true" class="fixed inset-0 w-screen h-screen z-[9999] pointer-events-none"></canvas>
+
+    <!-- ==================== FLOATING BOTTOM HUD ==================== -->
+    <div id="swarm-hud" class="fixed left-3 right-3 sm:left-1/2 sm:right-auto bottom-3 sm:bottom-5 sm:-translate-x-1/2 z-[10000] flex items-center justify-between sm:justify-start gap-2.5 px-3 py-2 sm:py-1.5 bg-surface/95 border border-border rounded-xl shadow-[0_12px_32px_rgba(0,0,0,0.65)] text-muted font-mono text-[11px] whitespace-nowrap backdrop-blur-md">
+        <!-- Status Area -->
+        <div id="hud-status" class="flex items-center gap-2.5 overflow-hidden">
+            <!-- Populated dynamically via JS -->
+        </div>
+
+        <!-- Progress Bar -->
+        <div id="hud-progress-wrap" class="w-14 sm:w-16 h-[3px] rounded-full bg-surface2 overflow-hidden shrink-0">
+            <div id="hud-progress-bar" class="h-full bg-accent transition-all duration-150" style="width: 0%"></div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex items-center gap-1.5 shrink-0">
+            <button id="hud-action-btn" type="button" class="px-2.5 py-1 rounded-md bg-surface2 hover:border-accent border border-border text-primary font-mono text-[11px] transition-colors">
+                Tour
+            </button>
+            <button id="hud-close-btn" type="button" aria-label="Skip build" title="Skip build (Esc)" class="px-2 py-1 rounded-md hover:bg-surface2 text-dim hover:text-primary font-mono text-xs transition-colors">
+                ×
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== HIDE-ON-SCROLL NAVBAR ==================== -->
+    <header id="main-nav" class="sticky top-0 z-50 w-full border-b border-border/80 bg-bg/85 backdrop-blur-md">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-2.5 group">
+                <div class="w-8 h-8 rounded-lg bg-surface border border-border flex items-center justify-center group-hover:border-accent/60 transition-colors">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="13" r="4.5" fill="var(--accent)" />
+                        <circle cx="12" cy="7.5" r="2.5" fill="var(--text)" />
+                        <path d="M8 10.5L3.5 6.5M7.5 13L2.5 13M8.2 15.5L3.5 19.5M16 10.5L20.5 6.5M16.5 13L21.5 13M15.8 15.5L20.5 19.5" stroke="var(--text)" stroke-width="1.7" stroke-linecap="round" />
+                    </svg>
+                </div>
+                <span class="font-semibold tracking-tight text-primary text-base">Hussain<span class="text-accent">.</span></span>
+                <span class="hidden sm:inline-block font-mono text-[10px] px-1.5 py-0.5 rounded bg-accent/15 text-accent border border-accent/30">PORTFOLIO</span>
+            </a>
+
+            <!-- Nav Links -->
+            <nav class="hidden md:flex items-center gap-8 text-sm text-muted">
+                <a href="#about" class="hover:text-primary transition-colors">About</a>
+                <a href="#skills" class="hover:text-primary transition-colors">Skills</a>
+                <a href="#projects" class="hover:text-primary transition-colors">Projects</a>
+                <a href="#themes" class="hover:text-primary transition-colors">Themes</a>
+                <a href="#contact" class="hover:text-primary transition-colors">Contact</a>
+            </nav>
+
+            <!-- CTA Buttons -->
+            <div class="flex items-center gap-2.5">
+                <button type="button" data-replay-trigger class="px-3 py-1.5 rounded-lg bg-surface hover:bg-surface2 border border-border text-xs font-mono text-muted hover:text-primary transition-colors flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"></span>
+                    Replay Intro
+                </button>
+                <a href="#contact" class="px-3.5 py-1.5 rounded-lg btn-accent font-medium text-xs sm:text-sm transition-all shadow-sm">
+                    Let’s talk
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main id="main" class="relative z-10 bg-grid">
+        <!-- Ambient Top Glow -->
+        <div aria-hidden="true" class="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[380px] bg-accent/10 blur-[130px] rounded-full"></div>
+
+        <!-- ==================== HERO SECTION ==================== -->
+        <section class="relative max-w-6xl mx-auto px-4 sm:px-6 pt-16 sm:pt-24 pb-20">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
+                <!-- Left Copy -->
+                <div class="lg:col-span-6 space-y-6">
+                    <div data-swarm-item data-swarm-kind="leaf" class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface border border-border text-xs font-mono text-muted">
+                        <span class="flex -space-x-1.5">
+                            <span class="w-3.5 h-3.5 rounded-full bg-accent border border-bg"></span>
+                            <span class="w-3.5 h-3.5 rounded-full bg-primary border border-bg"></span>
+                            <span class="w-3.5 h-3.5 rounded-full bg-muted border border-bg"></span>
+                        </span>
+                        <span>Available for web projects &amp; support</span>
+                    </div>
+
+                    <h1 data-swarm-item data-swarm-kind="text" class="text-4xl sm:text-5xl lg:text-[50px] font-semibold tracking-[-0.035em] leading-[1.1] text-primary">
+                        Hello, I’m Hussain — a Web Developer &amp; Designer.
+                    </h1>
+
+                    <p data-swarm-item data-swarm-kind="text" class="text-base sm:text-lg text-muted leading-relaxed max-w-xl">
+                        I create standard websites, classic websites, and 3D websites with clean design, smooth performance, and easy-to-use structure.
+                    </p>
+                    <p class="text-sm font-mono text-accent/95">Standard Websites · Classic Websites · 3D Websites</p>
+
+                    <div data-swarm-item data-swarm-kind="leaf" class="flex flex-wrap items-center gap-3 pt-2">
+                        <a href="#projects" class="px-5 py-3 rounded-xl btn-accent font-medium text-sm transition-all">
+                            Explore my work
+                        </a>
+                        <button type="button" data-replay-trigger class="px-5 py-3 rounded-xl bg-surface hover:bg-surface2 border border-border text-primary font-medium text-sm transition-colors flex items-center gap-2">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                            See the spider build
+                        </button>
+                    </div>
+
+                    <!-- Mini Stats -->
+                    <div data-swarm-item data-swarm-kind="leaf" class="grid grid-cols-3 gap-4 pt-6 border-t border-border/80 max-w-md">
+                        <div>
+                            <div class="font-mono text-lg font-semibold text-primary">Standard</div>
+                            <div class="text-xs text-muted">Clean websites</div>
+                        </div>
+                        <div>
+                            <div class="font-mono text-lg font-semibold text-accent">Classic</div>
+                            <div class="text-xs text-muted">Timeless style</div>
+                        </div>
+                        <div>
+                            <div class="font-mono text-lg font-semibold text-primary">3D Web</div>
+                            <div class="text-xs text-muted">Interactive 3D</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right LiveVisual: Editor Mode -->
+                <div class="lg:col-span-6">
+                    <div data-swarm-item data-swarm-kind="leaf" class="rounded-2xl bg-surface/80 border border-border p-4 sm:p-6 shadow-2xl backdrop-blur-sm">
+                        <div id="live-visual-editor" class="w-full"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 4-STEP PROCESS GRID (StepVisual) ==================== -->
+        <section id="process" class="max-w-6xl mx-auto px-4 sm:px-6 py-20 border-t border-border/60">
+            <div class="max-w-2xl mb-12">
+                <span data-swarm-item data-swarm-kind="text" class="font-mono text-xs uppercase tracking-wider text-accent">My approach</span>
+                <h2 data-swarm-item data-swarm-kind="text" class="mt-2 text-3xl sm:text-4xl font-semibold tracking-tight text-primary">
+                    From first idea to a polished digital experience.
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <!-- Step 1: Scan -->
+                <div data-swarm-item data-swarm-kind="leaf" class="rounded-2xl bg-surface border border-border overflow-hidden flex flex-col">
+                    <div id="step-visual-scan" class="h-36 border-b border-border bg-bg"></div>
+                    <div class="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-mono text-xs text-muted">01 / DISCOVER</span>
+                                <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-accent/15 text-accent">Web 1</span>
+                            </div>
+                            <h3 class="text-base font-semibold text-primary">Understand the goal</h3>
+                            <p class="mt-1.5 text-xs text-muted leading-relaxed">
+                                I start by understanding the audience, purpose, and content your website needs.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Frame -->
+                <div data-swarm-item data-swarm-kind="leaf" class="rounded-2xl bg-surface border border-border overflow-hidden flex flex-col">
+                    <div id="step-visual-frame" class="h-36 border-b border-border bg-bg"></div>
+                    <div class="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-mono text-xs text-muted">02 / DESIGN</span>
+                                <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-accent/15 text-accent">Web 2</span>
+                            </div>
+                            <h3 class="text-base font-semibold text-primary">Plan the experience</h3>
+                            <p class="mt-1.5 text-xs text-muted leading-relaxed">
+                                I focus on clear layouts, visual hierarchy, and responsive structure across devices.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Type -->
+                <div data-swarm-item data-swarm-kind="leaf" class="rounded-2xl bg-surface border border-border overflow-hidden flex flex-col">
+                    <div id="step-visual-type" class="h-36 border-b border-border bg-bg"></div>
+                    <div class="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-mono text-xs text-muted">03 / BUILD</span>
+                                <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-accent/15 text-accent">Web 3</span>
+                            </div>
+                            <h3 class="text-base font-semibold text-primary">Build with care</h3>
+                            <p class="mt-1.5 text-xs text-muted leading-relaxed">
+                                I build standard, classic, and 3D websites using modern web code and AI tools.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Ship -->
+                <div data-swarm-item data-swarm-kind="leaf" class="rounded-2xl bg-surface border border-border overflow-hidden flex flex-col">
+                    <div id="step-visual-ship" class="h-36 border-b border-border bg-bg"></div>
+                    <div class="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-mono text-xs text-muted">04 / SUPPORT</span>
+                                <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-accent/15 text-accent">Web 4</span>
+                            </div>
+                            <h3 class="text-base font-semibold text-primary">Support beyond launch</h3>
+                            <p class="mt-1.5 text-xs text-muted leading-relaxed">
+                                I value clear communication, troubleshooting, and helping people find the right solution.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== CAPABILITIES BENTO GRID (LiveVisual) ==================== -->
+        <section id="capabilities" class="max-w-6xl mx-auto px-4 sm:px-6 py-20 border-t border-border/60">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
+                <div class="max-w-2xl">
+                    <span data-swarm-item data-swarm-kind="text" class="font-mono text-xs uppercase tracking-wider text-accent">What I focus on</span>
+                    <h2 data-swarm-item data-swarm-kind="text" class="mt-2 text-3xl sm:text-4xl font-semibold tracking-tight text-primary">
+                        Practical skills for building better web experiences.
+                    </h2>
+                </div>
+                <div data-swarm-item data-swarm-kind="leaf" id="live-visual-meter" class="px-3.5 py-2 rounded-xl bg-surface border border-border"></div>
+            </div>
+
+            <!-- Bento Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-6 gap-5">
+                <!-- Card 1: Responsive Web Design (span 4) -->
+                <div data-swarm-item data-swarm-kind="leaf" class="md:col-span-4 rounded-2xl bg-surface border border-border overflow-hidden flex flex-col">
+                    <div id="live-visual-breakpoints" class="h-56 bg-bg border-b border-border"></div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-1.5">
+                            <h3 class="text-lg font-semibold text-primary">Responsive Web Design</h3>
+                            <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-accent/15 text-accent">1440 · 810 · 390</span>
+                        </div>
+                        <p class="text-sm text-muted">
+                            Layouts designed to work smoothly across desktop, tablet, and mobile screens.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card 2: Design Tokens (span 2) -->
+                <div data-swarm-item data-swarm-kind="leaf" class="md:col-span-2 rounded-2xl bg-surface border border-border overflow-hidden flex flex-col">
+                    <div id="live-visual-tokens" class="h-56 bg-bg border-b border-border relative"></div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-primary mb-1.5">Clean UI Foundations</h3>
+                        <p class="text-sm text-muted">
+                            Consistent spacing, typography, colors, and reusable interface patterns.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card 3: Live CMS (span 2) -->
+                <div data-swarm-item data-swarm-kind="leaf" class="md:col-span-2 rounded-2xl bg-surface border border-border overflow-hidden flex flex-col">
+                    <div id="live-visual-cms" class="h-48 bg-bg border-b border-border"></div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-primary mb-1.5">Standard &amp; Classic Sites</h3>
+                        <p class="text-sm text-muted">
+                            Clear, reliable websites built for everyday businesses, portfolios, and classic brand pages.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card 4: Component Variants (span 2) -->
+                <div data-swarm-item data-swarm-kind="leaf" class="md:col-span-2 rounded-2xl bg-surface border border-border overflow-hidden flex flex-col">
+                    <div id="live-visual-components" class="h-48 bg-bg border-b border-border"></div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-primary mb-1.5">3D Websites &amp; Motion</h3>
+                        <p class="text-sm text-muted">
+                            Interactive 3D web experiences and smooth animations that make visitors explore.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card 5: Automated SEO (span 2) -->
+                <div data-swarm-item data-swarm-kind="leaf" class="md:col-span-2 rounded-2xl bg-surface border border-border overflow-hidden flex flex-col">
+                    <div id="live-visual-seo" class="h-48 bg-bg border-b border-border relative"></div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-primary mb-1.5">Customer Support</h3>
+                        <p class="text-sm text-muted">
+                            Patient communication, issue understanding, troubleshooting, and helpful customer assistance.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SELECTED PROJECTS ==================== -->
+        <section id="projects" class="max-w-6xl mx-auto px-4 sm:px-6 py-20 border-t border-border/60">
+            <div class="max-w-2xl mb-12">
+                <span data-swarm-item data-swarm-kind="text" class="font-mono text-xs uppercase tracking-wider text-accent">Selected work</span>
+                <h2 data-swarm-item data-swarm-kind="text" class="mt-2 text-3xl sm:text-4xl font-semibold tracking-tight text-primary">Things I’m building.</h2>
+                <p data-swarm-item data-swarm-kind="text" class="mt-3 text-sm sm:text-base text-muted">A growing collection of experiments and web projects. More work is on the way.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <article data-swarm-item data-swarm-kind="leaf" class="rounded-2xl bg-surface border border-border overflow-hidden">
+                    <div class="h-48 bg-bg border-b border-border p-6 flex flex-col justify-between">
+                        <div class="flex items-center justify-between"><span class="font-mono text-xs text-accent">01 / WEB STUDIO</span><span class="text-xs text-muted">Live project</span></div>
+                        <div><div class="text-3xl font-semibold tracking-tight">Horizon<span class="text-accent">.</span></div><p class="text-sm text-muted mt-2">Creative websites. Thoughtful digital experiences.</p></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-primary">Horizon Web Studio</h3>
+                        <p class="mt-2 text-sm text-muted">A web studio portfolio exploring modern design, responsive layouts, and interactive 3D web experiences.</p>
+                        <div class="flex flex-wrap gap-3 mt-5 text-sm"><a class="text-accent hover:text-primary transition-colors" href="https://hussainmughal27.github.io/horizon-web-studio/" target="_blank" rel="noopener noreferrer">View live website ↗</a><a class="text-muted hover:text-primary transition-colors" href="https://github.com/Hussainmughal27" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div>
+                    </div>
+                </article>
+                <article data-swarm-item data-swarm-kind="leaf" class="rounded-2xl bg-surface border border-border overflow-hidden">
+                    <div class="h-48 bg-bg border-b border-border p-6 flex flex-col justify-between">
+                        <div class="flex items-center justify-between"><span class="font-mono text-xs text-accent">02 / INTERACTIVE EXPERIMENT</span><span class="text-xs text-muted">In progress</span></div>
+                        <div><div class="text-3xl font-semibold tracking-tight">Spider<span class="text-accent">Web</span></div><p class="text-sm text-muted mt-2">Mini spiders spinning threads behind text &amp; cards.</p></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-primary">Spider Web Portfolio</h3>
+                        <p class="mt-2 text-sm text-muted">Mini spiders spin delicate web threads behind text and cards as they reveal them across the page.</p>
+                        <span class="inline-block mt-5 font-mono text-xs text-muted">HTML · CSS · JavaScript · Animation</span>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- ==================== ABOUT ==================== -->
+        <section id="about" class="max-w-6xl mx-auto px-4 sm:px-6 py-20 border-t border-border/60">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+                <div class="lg:col-span-5">
+                    <span data-swarm-item data-swarm-kind="text" class="font-mono text-xs uppercase tracking-wider text-accent">About</span>
+                    <h2 data-swarm-item data-swarm-kind="text" class="mt-2 text-3xl sm:text-4xl font-semibold tracking-tight text-primary">Building modern websites with code, creativity &amp; AI.</h2>
+                </div>
+                <div class="lg:col-span-7">
+                    <p data-swarm-item data-swarm-kind="text" class="text-lg text-muted leading-relaxed">I’m Hussain — an AI-assisted web developer and web designer focused on responsive websites, thoughtful user experiences, and practical digital solutions. I also bring a customer-first approach to support and problem-solving.</p>
+                    <p data-swarm-item data-swarm-kind="text" class="mt-5 text-base text-muted leading-relaxed">I build standard websites, classic websites, and 3D websites using HTML, CSS, JavaScript, Python, and AI tools so every project is clear, engaging, and easy for visitors to use.</p>
+                    <div class="mt-7 flex flex-wrap gap-3">
+                        <a href="mailto:hussainmugal10@gmail.com" class="px-4 py-2.5 rounded-lg btn-accent text-sm font-medium transition-colors">Get in touch</a>
+                        <a href="https://github.com/Hussainmughal27?tab=repositories" target="_blank" rel="noopener noreferrer" class="px-4 py-2.5 rounded-lg bg-surface border border-border hover:border-accent text-primary text-sm transition-colors">Explore GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== SKILLS ==================== -->
+        <section id="skills" class="max-w-6xl mx-auto px-4 sm:px-6 py-20 border-t border-border/60">
+            <div class="max-w-2xl mb-10">
+                <span data-swarm-item data-swarm-kind="text" class="font-mono text-xs uppercase tracking-wider text-accent">My toolkit</span>
+                <h2 data-swarm-item data-swarm-kind="text" class="mt-2 text-3xl sm:text-4xl font-semibold tracking-tight text-primary">Skills &amp; technologies.</h2>
+                <p data-swarm-item data-swarm-kind="text" class="mt-3 text-sm text-muted">A practical toolkit I’m actively developing through projects and hands-on learning.</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div data-swarm-item data-swarm-kind="leaf" class="rounded-xl bg-surface border border-border p-5"><h3 class="font-semibold text-primary">Web development</h3><p class="mt-2 text-sm text-muted">HTML · CSS · JavaScript · Python</p></div>
+                <div data-swarm-item data-swarm-kind="leaf" class="rounded-xl bg-surface border border-border p-5"><h3 class="font-semibold text-primary">Website types</h3><p class="mt-2 text-sm text-muted">Standard Websites · Classic Websites · 3D Websites</p></div>
+                <div data-swarm-item data-swarm-kind="leaf" class="rounded-xl bg-surface border border-border p-5"><h3 class="font-semibold text-primary">AI-assisted development</h3><p class="mt-2 text-sm text-muted">AI coding tools · Prompting · Debugging assistance</p></div>
+                <div data-swarm-item data-swarm-kind="leaf" class="rounded-xl bg-surface border border-border p-5"><h3 class="font-semibold text-primary">Developer tools</h3><p class="mt-2 text-sm text-muted">VS Code · Git · GitHub · Linux</p></div>
+                <div data-swarm-item data-swarm-kind="leaf" class="rounded-xl bg-surface border border-border p-5"><h3 class="font-semibold text-primary">Customer support</h3><p class="mt-2 text-sm text-muted">Customer communication · Issue handling · Troubleshooting</p></div>
+                <div data-swarm-item data-swarm-kind="leaf" class="rounded-xl bg-surface border border-border p-5"><h3 class="font-semibold text-primary">Professional strengths</h3><p class="mt-2 text-sm text-muted">Problem-solving · Adaptability · Time management · Continuous learning</p></div>
+            </div>
+        </section>
+
+        <!-- ==================== COLOR THEMES (RED & BLACK / BLACK & WHITE) ==================== -->
+        <section id="themes" class="max-w-6xl mx-auto px-4 sm:px-6 py-16 border-t border-border/60">
+            <div class="max-w-2xl mb-8">
+                <span data-swarm-item data-swarm-kind="text" class="font-mono text-xs uppercase tracking-wider text-accent">Make it yours</span>
+                <h2 data-swarm-item data-swarm-kind="text" class="mt-2 text-3xl sm:text-4xl font-semibold tracking-tight text-primary">Choose a theme mode.</h2>
+                <p class="mt-3 text-sm text-muted">Switch between Red &amp; Black or Black &amp; White across the entire portfolio.</p>
+            </div>
+            <div class="flex flex-wrap gap-3" role="group" aria-label="Choose portfolio theme mode">
+                <button type="button" data-theme-choice="red" aria-pressed="true" class="theme-choice">
+                    <span class="theme-swatch theme-swatch-red-black" aria-hidden="true"></span>
+                    <span>Red &amp; Black</span>
+                </button>
+                <button type="button" data-theme-choice="bw" aria-pressed="false" class="theme-choice">
+                    <span class="theme-swatch theme-swatch-bw" aria-hidden="true"></span>
+                    <span>Black &amp; White</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- ==================== CONTACT ==================== -->
+        <section id="contact" class="max-w-6xl mx-auto px-4 sm:px-6 py-20 border-t border-border/60">
+            <div class="rounded-3xl border border-accent/35 bg-surface p-8 sm:p-12 text-center">
+                <span data-swarm-item data-swarm-kind="text" class="font-mono text-xs uppercase tracking-wider text-accent">Let’s connect</span>
+                <h2 data-swarm-item data-swarm-kind="text" class="mt-3 text-3xl sm:text-4xl font-semibold tracking-tight text-primary">Have an idea or an opportunity?</h2>
+                <p data-swarm-item data-swarm-kind="text" class="mt-4 max-w-xl mx-auto text-sm sm:text-base text-muted">Whether it’s a standard website, classic website, 3D website, or customer support opportunity, I’d be happy to hear from you.</p>
+                <a data-swarm-item data-swarm-kind="leaf" href="mailto:hussainmugal10@gmail.com" class="inline-flex mt-7 px-6 py-3 rounded-xl btn-accent text-sm font-medium transition-colors">hussainmugal10@gmail.com</a>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mt-9 text-left">
+                    <!-- Instagram -->
+                    <a class="social-profile-card" href="https://www.instagram.com/husain.mugal27?bqrl=c3E3dngwbzlkdnQ4" target="_blank" rel="noopener noreferrer">
+                        <span class="social-profile-icon">
+                            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                            </svg>
+                        </span>
+                        <span class="min-w-0"><strong>Instagram</strong><small>@husain.mugal27</small></span>
+                        <span class="social-profile-arrow">↗</span>
+                    </a>
+
+                    <!-- Facebook -->
+                    <a class="social-profile-card" href="https://www.facebook.com/hussainmughal2712" target="_blank" rel="noopener noreferrer">
+                        <span class="social-profile-icon">
+                            <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M14 13.5h2.5l1-4H14v-2c0-1.03 0-2 2-2h1.5V2.14c-.326-.043-1.557-.14-2.857-.14C11.928 2 10 3.657 10 6.7v2.8H7v4h3V22h4v-8.5z"></path>
+                            </svg>
+                        </span>
+                        <span class="min-w-0"><strong>Facebook</strong><small>hussainmughal2712</small></span>
+                        <span class="social-profile-arrow">↗</span>
+                    </a>
+
+                    <!-- WhatsApp -->
+                    <a class="social-profile-card" href="https://wa.me/923411044227" target="_blank" rel="noopener noreferrer">
+                        <span class="social-profile-icon">
+                            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                            </svg>
+                        </span>
+                        <span class="min-w-0"><strong>WhatsApp</strong><small>+92 341 1044227</small></span>
+                        <span class="social-profile-arrow">↗</span>
+                    </a>
+
+                    <!-- GitHub -->
+                    <a class="social-profile-card" href="https://github.com/Hussainmughal27?tab=repositories" target="_blank" rel="noopener noreferrer">
+                        <span class="social-profile-icon">
+                            <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path>
+                            </svg>
+                        </span>
+                        <span class="min-w-0"><strong>GitHub</strong><small>Hussainmughal27</small></span>
+                        <span class="social-profile-arrow">↗</span>
+                    </a>
+
+                    <!-- YouTube -->
+                    <a class="social-profile-card" href="https://www.youtube.com/@Tech-spree" target="_blank" rel="noopener noreferrer">
+                        <span class="social-profile-icon">
+                            <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"></path>
+                            </svg>
+                        </span>
+                        <span class="min-w-0"><strong>YouTube</strong><small>@Tech-spree</small></span>
+                        <span class="social-profile-arrow">↗</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="relative z-10 border-t border-border bg-bg py-12 pb-24">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted">
+            <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-accent"></span>
+                <span class="font-mono">Designed &amp; built by Hussain · © 2026</span>
+            </div>
+            <div class="flex items-center gap-6">
+                <button type="button" data-replay-trigger class="hover:text-primary transition-colors">Replay the intro</button>
+                <a href="#about" class="hover:text-primary transition-colors">About</a>
+                <a href="#projects" class="hover:text-primary transition-colors">Projects</a>
+                <a href="#contact" class="hover:text-primary transition-colors">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== SPIDER CURSOR & MINI SPIDERS LAYER ==================== -->
+    <div id="spider-cursor-layer" aria-hidden="true"></div>
+
+    <!-- ==================== THEME CONTROLLER (RED & BLACK / BLACK & WHITE) ==================== -->
+    <script>
+        (() => {
+            const getPalette = (mode) => {
+                if (mode === 'bw') {
+                    return {
+                        accent: '#FFFFFF',
+                        chip: '#222222',
+                        webStroke: 'rgba(255, 255, 255, 0.11)',
+                        webNode: 'rgba(255, 255, 255, 0.22)',
+                        silkStroke: 'rgba(255, 255, 255, 0.24)',
+                        silkCross: 'rgba(255, 255, 255, 0.13)',
+                        silkNode: 'rgba(255, 255, 255, 0.45)',
+                        spiderBody: '#FFFFFF',
+                        spiderAbdomen: '#141414',
+                        spiderLeg: '#FFFFFF',
+                        spiderEye: '#050505',
+                        miniBody: '#FFFFFF',
+                        miniLeg: '#D4D4D4'
+                    };
+                }
+                return {
+                    accent: '#FF0000',
+                    chip: '#8A0000',
+                    webStroke: 'rgba(255, 0, 0, 0.18)',
+                    webNode: 'rgba(255, 0, 0, 0.36)',
+                    silkStroke: 'rgba(255, 0, 0, 0.32)',
+                    silkCross: 'rgba(255, 45, 45, 0.17)',
+                    silkNode: 'rgba(255, 65, 65, 0.55)',
+                    spiderBody: '#FF0000',
+                    spiderAbdomen: '#120000',
+                    spiderLeg: '#FF0000',
+                    spiderEye: '#FFFFFF',
+                    miniBody: '#FF0000',
+                    miniLeg: '#FF3333'
+                };
+            };
+
+            window.PORTFOLIO_PALETTE = getPalette('red');
+
+            const applyTheme = (name) => {
+                const mode = name === 'bw' ? 'bw' : 'red';
+                const palette = getPalette(mode);
+                window.PORTFOLIO_PALETTE = palette;
+                window.dispatchEvent(new CustomEvent('portfolio-theme-change', { detail: { mode, palette } }));
+
+                document.documentElement.dataset.mode = mode;
+                document.body.dataset.mode = mode;
+                document.documentElement.style.setProperty('--accent', palette.accent);
+                document.documentElement.style.setProperty('--chip', palette.chip);
+
+                document.querySelectorAll('[data-theme-choice]').forEach(button => {
+                    button.setAttribute('aria-pressed', String(button.dataset.themeChoice === mode));
+                });
+
+                try { localStorage.setItem('hussain-portfolio-mode', mode); } catch (_) {}
+            };
+
+            document.addEventListener('DOMContentLoaded', () => {
+                document.querySelectorAll('[data-theme-choice]').forEach(button => {
+                    button.addEventListener('click', () => applyTheme(button.dataset.themeChoice));
+                });
+                let saved = 'red';
+                try {
+                    const stored = localStorage.getItem('hussain-portfolio-mode');
+                    if (stored === 'bw' || stored === 'red') saved = stored;
+                } catch (_) {}
+                applyTheme(saved);
+            });
+        })();
+    </script>
+
+    <!-- ==================== SPIDER WEB BACKGROUND & MINI SPIDERS BUILDER ==================== -->
+    <script>
+        (() => {
+            const webCanvas = document.getElementById('spider-web-bg');
+            const silkCanvas = document.getElementById('silk-weave-layer');
+            const cursorLayer = document.getElementById('spider-cursor-layer');
+            if (!webCanvas || !silkCanvas || !cursorLayer) return;
+
+            const wCtx = webCanvas.getContext('2d');
+            const sCtx = silkCanvas.getContext('2d');
+            const finePointer = window.matchMedia('(pointer: fine)').matches;
+
+            let vw = window.innerWidth;
+            let vh = window.innerHeight;
+            let dpr = Math.min(2, window.devicePixelRatio || 1);
+            let webAnchors = [];
+
+            // Stores woven silk threads behind revealed text & cards
+            const silkThreads = [];
+
+            function buildWebAnchors() {
+                webAnchors = [
+                    { cx: vw * 0.08, cy: vh * 0.14, r: Math.min(vw, vh) * 0.24, spokes: 10, rings: 5 },
+                    { cx: vw * 0.92, cy: vh * 0.22, r: Math.min(vw, vh) * 0.22, spokes: 10, rings: 5 },
+                    { cx: vw * 0.16, cy: vh * 0.78, r: Math.min(vw, vh) * 0.25, spokes: 12, rings: 5 },
+                    { cx: vw * 0.85, cy: vh * 0.82, r: Math.min(vw, vh) * 0.23, spokes: 10, rings: 5 }
+                ];
+            }
+
+            function resize() {
+                vw = window.innerWidth;
+                vh = window.innerHeight;
+                dpr = Math.min(2, window.devicePixelRatio || 1);
+
+                webCanvas.width = Math.round(vw * dpr);
+                webCanvas.height = Math.round(vh * dpr);
+                webCanvas.style.width = vw + 'px';
+                webCanvas.style.height = vh + 'px';
+
+                silkCanvas.width = Math.round(vw * dpr);
+                silkCanvas.height = Math.round(vh * dpr);
+                silkCanvas.style.width = vw + 'px';
+                silkCanvas.style.height = vh + 'px';
+
+                buildWebAnchors();
+            }
+
+            resize();
+            window.addEventListener('resize', resize);
+
+            function addSilkThread(x1, y1, x2, y2, sag, isCross, now) {
+                if (silkThreads.length > 260) silkThreads.shift();
+                silkThreads.push({
+                    x1, y1, x2, y2,
+                    sag,
+                    isCross: Boolean(isCross),
+                    born: now,
+                    phase: Math.random() * Math.PI * 2
+                });
+            }
+
+            function clearSilkThreads() {
+                silkThreads.length = 0;
+            }
+
+            function drawSilkWeave(now) {
+                const p = window.PORTFOLIO_PALETTE || {};
+                const mainSilk = p.silkStroke || 'rgba(255, 0, 0, 0.32)';
+                const crossSilk = p.silkCross || 'rgba(255, 45, 45, 0.17)';
+                const nodeSilk = p.silkNode || 'rgba(255, 65, 65, 0.55)';
+
+                sCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                sCtx.clearRect(0, 0, vw, vh);
+
+                sCtx.save();
+                sCtx.lineCap = 'round';
+
+                for (let i = 0; i < silkThreads.length; i++) {
+                    const st = silkThreads[i];
+                    const age = (now - st.born) / 1000;
+                    const drawProg = Math.min(1, age / 0.28);
+                    const fadeOut = age > 4.2 ? Math.max(0, 1 - (age - 4.2) / 1.4) : 1;
+                    if (fadeOut <= 0) continue;
+
+                    const ex = st.x1 + (st.x2 - st.x1) * drawProg;
+                    const ey = st.y1 + (st.y2 - st.y1) * drawProg;
+                    const mx = (st.x1 + ex) * 0.5;
+                    const breeze = Math.sin(now * 0.002 + st.phase) * 1.4;
+                    const my = (st.y1 + ey) * 0.5 + st.sag + breeze;
+
+                    sCtx.globalAlpha = fadeOut;
+                    sCtx.strokeStyle = st.isCross ? crossSilk : mainSilk;
+                    sCtx.lineWidth = st.isCross ? 0.75 : 1.05;
+
+                    sCtx.beginPath();
+                    sCtx.moveTo(st.x1, st.y1);
+                    sCtx.quadraticCurveTo(mx, my, ex, ey);
+                    sCtx.stroke();
+
+                    // Tiny silk knot where thread anchors
+                    if (drawProg > 0.7) {
+                        sCtx.fillStyle = nodeSilk;
+                        sCtx.beginPath();
+                        sCtx.arc(ex, ey, st.isCross ? 1.1 : 1.5, 0, Math.PI * 2);
+                        sCtx.fill();
+                    }
+                }
+
+                sCtx.restore();
+            }
+
+            function drawSpiderWebs(now) {
+                const p = window.PORTFOLIO_PALETTE || {};
+                const strokeColor = p.webStroke || 'rgba(255, 0, 0, 0.18)';
+                const nodeColor = p.webNode || 'rgba(255, 0, 0, 0.35)';
+
+                wCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                wCtx.clearRect(0, 0, vw, vh);
+
+                wCtx.save();
+                wCtx.strokeStyle = strokeColor;
+                wCtx.fillStyle = nodeColor;
+                wCtx.lineWidth = 1;
+
+                const sway = Math.sin(now * 0.0012) * 3;
+
+                for (let a = 0; a < webAnchors.length; a++) {
+                    const web = webAnchors[a];
+                    const cx = web.cx + sway * (a % 2 === 0 ? 1 : -1);
+                    const cy = web.cy + Math.cos(now * 0.001 + a) * 2;
+                    const ringPts = [];
+
+                    for (let rIdx = 1; rIdx <= web.rings; rIdx++) {
+                        const rad = (web.r / web.rings) * rIdx;
+                        const pts = [];
+                        for (let s = 0; s < web.spokes; s++) {
+                            const ang = (s / web.spokes) * Math.PI * 2 + a * 0.35;
+                            const sag = 1 - Math.sin((s / web.spokes) * Math.PI) * 0.05;
+                            pts.push({
+                                x: cx + Math.cos(ang) * rad * sag,
+                                y: cy + Math.sin(ang) * rad * sag
+                            });
+                        }
+                        ringPts.push(pts);
+                    }
+
+                    const outer = ringPts[ringPts.length - 1];
+                    for (let s = 0; s < web.spokes; s++) {
+                        wCtx.beginPath();
+                        wCtx.moveTo(cx, cy);
+                        wCtx.lineTo(outer[s].x, outer[s].y);
+                        wCtx.stroke();
+                    }
+
+                    for (let rIdx = 0; rIdx < ringPts.length; rIdx++) {
+                        const pts = ringPts[rIdx];
+                        wCtx.beginPath();
+                        for (let s = 0; s < pts.length; s++) {
+                            const curr = pts[s];
+                            const next = pts[(s + 1) % pts.length];
+                            if (s === 0) wCtx.moveTo(curr.x, curr.y);
+                            const mxPt = (curr.x + next.x) * 0.5;
+                            const myPt = (curr.y + next.y) * 0.5 + 2.2;
+                            wCtx.quadraticCurveTo(curr.x, curr.y, mxPt, myPt);
+                        }
+                        wCtx.closePath();
+                        wCtx.stroke();
+                    }
+
+                    for (let rIdx = 1; rIdx < ringPts.length; rIdx += 2) {
+                        for (let s = 0; s < web.spokes; s += 2) {
+                            const pt = ringPts[rIdx][s];
+                            wCtx.beginPath();
+                            wCtx.arc(pt.x, pt.y, 1.5, 0, Math.PI * 2);
+                            wCtx.fill();
+                        }
+                    }
+                }
+
+                wCtx.restore();
+            }
+
+            function makeSpiderSVG(size, isMini) {
+                const p = window.PORTFOLIO_PALETTE || {};
+                const bodyFill = isMini ? (p.miniBody || '#FF0000') : (p.spiderBody || '#FF0000');
+                const legStroke = isMini ? (p.miniLeg || '#FF3333') : (p.spiderLeg || '#FF0000');
+                const abdomenFill = p.spiderAbdomen || '#120000';
+                const eyeFill = p.spiderEye || '#FFFFFF';
+
+                return `
+                    <svg width="${size}" height="${size}" viewBox="0 0 48 48" fill="none" style="display:block;overflow:visible;">
+                        <g class="spider-legs" stroke="${legStroke}" stroke-width="${isMini ? '2.6' : '2.2'}" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 21 L12 12 L5 15" />
+                            <path d="M20 24 L9 21 L3 26" />
+                            <path d="M20 27 L10 31 L5 38" />
+                            <path d="M21 30 L14 38 L10 44" />
+                            <path d="M27 21 L36 12 L43 15" />
+                            <path d="M28 24 L39 21 L45 26" />
+                            <path d="M28 27 L38 31 L43 38" />
+                            <path d="M27 30 L34 38 L38 44" />
+                        </g>
+                        <ellipse cx="24" cy="30" rx="6.8" ry="8.2" fill="${abdomenFill}" stroke="${bodyFill}" stroke-width="1.6" />
+                        <circle cx="24" cy="19.5" r="4.8" fill="${bodyFill}" />
+                        <circle cx="22.1" cy="17.2" r="1.25" fill="${eyeFill}" />
+                        <circle cx="25.9" cy="17.2" r="1.25" fill="${eyeFill}" />
+                    </svg>
+                `;
+            }
+
+            // Lead Spider Cursor (follows pointer cleanly when pointer moves)
+            const mainSpiderEl = document.createElement('div');
+            mainSpiderEl.className = 'spider-actor';
+            mainSpiderEl.innerHTML = makeSpiderSVG(34, false);
+            if (!finePointer) mainSpiderEl.style.display = 'none';
+            cursorLayer.appendChild(mainSpiderEl);
+
+            // Mini Spider Builders (spin delicate silk threads behind text & cards as they reveal them)
+            const MINI_COUNT = 12;
+            const miniSpiders = [];
+            for (let i = 0; i < MINI_COUNT; i++) {
+                const el = document.createElement('div');
+                el.className = 'spider-actor';
+                el.innerHTML = makeSpiderSVG(20, true);
+                cursorLayer.appendChild(el);
+                miniSpiders.push({
+                    id: i,
+                    el,
+                    x: vw * 0.5,
+                    y: vh * 0.5,
+                    prevSilkX: vw * 0.5,
+                    prevSilkY: vh * 0.5,
+                    vx: 0,
+                    vy: 0,
+                    tx: vw * 0.5,
+                    ty: vh * 0.5,
+                    job: null,
+                    box: null,
+                    phase: 'idle',
+                    t0: 0,
+                    orbitAngle: (i / MINI_COUNT) * Math.PI * 2,
+                    orbitRadius: 24 + (i % 3) * 9,
+                    speed: 2.3 + (i % 3) * 0.4
+                });
+            }
+
+            window.addEventListener('portfolio-theme-change', () => {
+                mainSpiderEl.innerHTML = makeSpiderSVG(34, false);
+                miniSpiders.forEach((m) => {
+                    m.el.innerHTML = makeSpiderSVG(20, true);
+                });
+            });
+
+            window.SPIDER_BUILDER = {
+                spiderList: miniSpiders,
+                renderWebs: drawSpiderWebs,
+                addSilkThread,
+                clearSilkThreads
+            };
+
+            let targetX = vw * 0.5;
+            let targetY = vh * 0.5;
+            let curX = targetX;
+            let curY = targetY;
+            let prevX = targetX;
+            let prevY = targetY;
+            let heading = 0;
+            let pointerVisible = finePointer;
+
+            window.addEventListener('pointermove', (e) => {
+                if (!finePointer) return;
+                targetX = e.clientX;
+                targetY = e.clientY;
+                pointerVisible = true;
+                mainSpiderEl.style.opacity = '1';
+            }, { passive: true });
+
+            document.addEventListener('mouseleave', () => {
+                if (!finePointer) return;
+                pointerVisible = false;
+                mainSpiderEl.style.opacity = '0';
+            });
+
+            let lastTime = performance.now();
+            function animateActors(now) {
+                const dt = Math.min(0.05, Math.max(0.001, (now - lastTime) / 1000));
+                lastTime = now;
+
+                drawSpiderWebs(now);
+                drawSilkWeave(now);
+
+                if (finePointer && pointerVisible) {
+                    curX += (targetX - curX) * Math.min(1, dt * 24);
+                    curY += (targetY - curY) * Math.min(1, dt * 24);
+
+                    const dx = curX - prevX;
+                    const dy = curY - prevY;
+                    if (Math.hypot(dx, dy) > 0.35) {
+                        heading = Math.atan2(dy, dx) + Math.PI / 2;
+                    }
+                    prevX = curX;
+                    prevY = curY;
+
+                    const legWiggle = Math.sin(now * 0.024) * 3.5;
+                    mainSpiderEl.style.transform = `translate3d(${(curX - 17).toFixed(1)}px, ${(curY - 17).toFixed(1)}px, 0) rotate(${(heading + legWiggle * 0.015).toFixed(3)}rad)`;
+                }
+
+                for (let i = 0; i < miniSpiders.length; i++) {
+                    const m = miniSpiders[i];
+                    let gx = m.tx;
+                    let gy = m.ty;
+
+                    if (!m.job) {
+                        const anchorX = finePointer && pointerVisible ? curX : vw * 0.5;
+                        const anchorY = finePointer && pointerVisible ? curY : vh * 0.45;
+                        m.orbitAngle += m.speed * dt * (i % 2 === 0 ? 1 : -1);
+                        const wobble = Math.sin(now * 0.005 + i * 1.7) * 5;
+                        gx = anchorX + Math.cos(m.orbitAngle) * (m.orbitRadius + wobble);
+                        gy = anchorY + Math.sin(m.orbitAngle) * (m.orbitRadius + wobble);
+                    }
+
+                    const k = m.job ? 180 : 120;
+                    m.vx += (gx - m.x) * k * dt;
+                    m.vy += (gy - m.y) * k * dt;
+                    m.vx *= Math.pow(0.04, dt);
+                    m.vy *= Math.pow(0.04, dt);
+                    m.x += m.vx * dt;
+                    m.y += m.vy * dt;
+
+                    // Spin delicate silk thread segments as mini spider reveals text/cards
+                    if (m.job && Math.hypot(m.x - m.prevSilkX, m.y - m.prevSilkY) >= 16) {
+                        addSilkThread(m.prevSilkX, m.prevSilkY, m.x, m.y, 1.8, false, now);
+                        m.prevSilkX = m.x;
+                        m.prevSilkY = m.y;
+                    } else if (!m.job) {
+                        m.prevSilkX = m.x;
+                        m.prevSilkY = m.y;
+                    }
+
+                    const spd = Math.hypot(m.vx, m.vy);
+                    const mAngle = spd > 12
+                        ? Math.atan2(m.vy, m.vx) + Math.PI / 2
+                        : Math.atan2(gy - m.y, gx - m.x) + Math.PI / 2;
+                    const scurry = Math.sin(now * 0.032 + i) * 0.14;
+                    m.el.style.opacity = '0.96';
+                    m.el.style.transform = `translate3d(${(m.x - 10).toFixed(1)}px, ${(m.y - 10).toFixed(1)}px, 0) rotate(${(mAngle + scurry).toFixed(3)}rad)`;
+                }
+
+                requestAnimationFrame(animateActors);
+            }
+
+            requestAnimationFrame(animateActors);
+        })();
+    </script>
+
+    <!-- ==================== APPLICATION LOGIC ==================== -->
+    <script>
+    (function () {
+        "use strict";
+
+        const MONO = "'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace";
+        const DISPLAY = "'Inter', system-ui, sans-serif";
+        const NAMES = ["Ari", "Bex", "Cal", "Dot", "Eon", "Fox", "Gem", "Hex", "Ivo", "Jet", "Kit", "Lyn", "Max", "Neo"];
+
+        const clamp = (v) => Math.max(0, Math.min(1, v));
+        const seg = (t, a, b) => clamp((t - a) / (b - a));
+        const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+        const lerp = (a, b, t) => a + (b - a) * t;
+
+        function getPalette() {
+            return window.PORTFOLIO_PALETTE || {
+                accent: "#FF0000",
+                chip: "#8A0000",
+                spiderBody: "#FF0000",
+                spiderLeg: "#FF0000"
+            };
+        }
+
+        function getAgentColors(count) {
+            const p = getPalette();
+            if (document.documentElement.dataset.mode === "bw") {
+                const bwSet = ["#FFFFFF", "#E5E5E5", "#D4D4D4", "#A3A3A3", "#F5F5F5", "#9CA3AF", "#E2E8F0"];
+                return Array.from({ length: count }, (_, i) => bwSet[i % bwSet.length]);
+            }
+            const redSet = ["#FF0000", "#E60000", "#FF2A2A", "#CC0000", "#FF4545", "#B30000", "#FF1A1A"];
+            return Array.from({ length: count }, (_, i) => redSet[i % redSet.length] || p.accent);
+        }
+
+        function miniSpiderBadge(color, name, scale = 1, opacity = 1) {
+            const textColor = document.documentElement.dataset.mode === "bw" ? "#050505" : "#FFFFFF";
+            return `
+                <div style="position:relative;display:inline-block;transform:scale(${scale});transform-origin:0 0;pointer-events:none;opacity:${opacity};">
+                    <svg width="18" height="18" viewBox="0 0 48 48" style="display:block;overflow:visible;">
+                        <g stroke="${color}" stroke-width="3.2" stroke-linecap="round">
+                            <path d="M21 21 L11 12 L4 15" />
+                            <path d="M20 24 L8 21 L2 26" />
+                            <path d="M20 27 L9 31 L4 38" />
+                            <path d="M27 21 L37 12 L44 15" />
+                            <path d="M28 24 L40 21 L46 26" />
+                            <path d="M28 27 L39 31 L44 38" />
+                        </g>
+                        <circle cx="24" cy="26" r="6.5" fill="${color}" />
+                        <circle cx="24" cy="19" r="3.5" fill="${textColor}" />
+                    </svg>
+                    ${name ? `<span style="position:absolute;left:14px;top:13px;background:${color};color:${textColor};font:700 9px Inter,sans-serif;padding:1px 6px;border-radius:7px;white-space:nowrap;">${name}</span>` : ""}
+                </div>
+            `;
+        }
+
+        /* ------------------------------------------------------------------
+           HIDE-ON-SCROLL NAVBAR
+        ------------------------------------------------------------------ */
+        (function initHideOnScroll() {
+            const nav = document.getElementById("main-nav");
+            if (!nav) return;
+            let lastY = window.scrollY;
+            let ticking = false;
+
+            window.addEventListener("scroll", () => {
+                if (!ticking) {
+                    requestAnimationFrame(() => {
+                        const y = window.scrollY;
+                        const delta = y - lastY;
+                        if (y < 80) {
+                            nav.classList.remove("nav-hidden");
+                            lastY = y;
+                        } else if (Math.abs(delta) >= 8) {
+                            if (delta > 0) nav.classList.add("nav-hidden");
+                            else nav.classList.remove("nav-hidden");
+                            lastY = y;
+                        }
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }, { passive: true });
+        })();
+
+        /* ------------------------------------------------------------------
+           STEP VISUALS & LIVE VISUALS
+        ------------------------------------------------------------------ */
+        const visualRegistry = [];
+
+        function registerVisual(el, renderFn) {
+            if (!el) return;
+            let visible = true;
+            if ("IntersectionObserver" in window) {
+                const io = new IntersectionObserver((entries) => {
+                    visible = entries[0].isIntersecting;
+                });
+                io.observe(el);
+            }
+            visualRegistry.push({ el, renderFn, isVisible: () => visible });
+        }
+
+        const LOG_ROWS = [
+            ["Bex", "framed Hero · 1200 × 640"],
+            ["Dot", "typed Standard, Classic & 3D copy"],
+            ["Fox", "spun silk threads behind text"],
+            ["Ari", "queued Publish · hussain.dev"],
+            ["Hex", "linked UI variants"],
+            ["Lyn", "wrote meta description"],
+        ];
+
+        registerVisual(document.getElementById("live-visual-editor"), (el, t) => {
+            const p = getPalette();
+            const step = Math.floor(t / 2.4);
+            const local = (t % 2.4) / 2.4;
+            const shift = ease(seg(local, 0.75, 1));
+            const rows = [0, 1, 2, 3, 4].map((i) => LOG_ROWS[(step + i) % LOG_ROWS.length]);
+            const caretOn = Math.sin(t * 6) > -0.2;
+
+            el.innerHTML = `
+                <div style="display:flex;flex-direction:column;gap:12px;width:100%;">
+                    <div style="width:100%;height:245px;border-radius:10px;background:var(--surface);border:1px solid var(--border);padding:14px;display:flex;flex-direction:column;gap:12px;">
+                        <div style="display:flex;align-items:center;justify-content:space-between;">
+                            <div style="width:12px;height:12px;border-radius:3px;background:var(--border2);"></div>
+                            <div style="display:flex;gap:6px;">
+                                <div style="width:22px;height:5px;border-radius:3px;background:var(--border2);"></div>
+                                <div style="width:22px;height:5px;border-radius:3px;background:var(--border2);"></div>
+                                <div style="width:22px;height:5px;border-radius:3px;background:var(--border2);"></div>
+                            </div>
+                        </div>
+                        <div style="position:relative;flex:1;border-radius:6px;border:1px solid ${p.accent};background:color-mix(in srgb, ${p.accent} 6%, transparent);padding:18px;display:flex;flex-direction:column;justify-content:center;gap:8px;">
+                            <span style="position:absolute;right:8px;top:8px;background:${p.chip};color:#fff;font:600 9px ${MONO};padding:2px 6px;border-radius:3px;">Hero · 1200 × 640</span>
+                            <div style="width:65%;height:12px;border-radius:3px;background:var(--text);opacity:0.85;"></div>
+                            <div style="display:flex;align-items:center;gap:4px;">
+                                <div style="width:45%;height:12px;border-radius:3px;background:var(--text);opacity:0.85;"></div>
+                                <div style="width:2px;height:16px;background:${p.accent};opacity:${caretOn ? 1 : 0};"></div>
+                            </div>
+                            <div style="display:flex;flex-direction:column;gap:5px;padding-top:4px;">
+                                <div style="width:75%;height:5px;border-radius:3px;background:var(--border2);"></div>
+                                <div style="width:62%;height:5px;border-radius:3px;background:var(--border2);"></div>
+                            </div>
+                            <div style="display:flex;gap:6px;padding-top:6px;">
+                                <div style="width:56px;height:16px;border-radius:3px;background:${p.accent};"></div>
+                                <div style="width:56px;height:16px;border-radius:3px;border:1px solid var(--border2);"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="width:100%;border-radius:10px;background:var(--surface);border:1px solid var(--border);padding:11px 14px;">
+                        <div style="height:76px;overflow:hidden;">
+                            <div style="display:flex;flex-direction:column;gap:8px;transform:translateY(${-shift * 22}px);">
+                                ${rows.map((r, i) => `
+                                    <div style="display:flex;align-items:center;gap:8px;height:14px;font:500 11px ${MONO};white-space:nowrap;opacity:${i === 0 ? 1 - shift : i === 4 ? shift : 1};">
+                                        <span style="width:6px;height:6px;border-radius:3px;background:${p.accent};flex-shrink:0;"></span>
+                                        <span style="color:var(--text);">${r[0]}</span>
+                                        <span style="color:var(--muted);overflow:hidden;text-overflow:ellipsis;">${r[1]}</span>
+                                    </div>
+                                `).join("")}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        registerVisual(document.getElementById("step-visual-scan"), (el, t) => {
+            const p = getPalette();
+            const prog = (t % 4) / 4;
+            const active = Math.min(2, Math.floor(prog * 3.2));
+            const count = Math.round(216 * ease(clamp(prog * 1.15)));
+            const done = prog > 0.86;
+            const cx = 18 + active * 56 + 24;
+
+            const thumbs = [0, 1, 2].map((i) => {
+                const on = i === active && !done;
+                const seen = i < active || done;
+                const sweepLeft = ((prog * 3.2) % 1) * 48;
+                return `
+                    <div style="position:absolute;left:${18 + i * 56}px;top:18px;width:48px;height:34px;border-radius:4px;background:var(--surface);border:1px solid ${on ? p.accent : seen ? p.accent : "var(--border)"};overflow:hidden;">
+                        <div style="position:absolute;left:6px;top:7px;width:22px;height:3px;border-radius:2px;background:var(--border2);"></div>
+                        <div style="position:absolute;left:6px;top:14px;width:30px;height:3px;border-radius:2px;background:var(--border);"></div>
+                        ${on ? `<div style="position:absolute;top:0;bottom:0;width:2px;left:${sweepLeft}px;background:${p.accent};"></div>` : ""}
+                    </div>
+                `;
+            }).join("");
+
+            el.innerHTML = `
+                <div style="position:relative;width:100%;height:100%;overflow:hidden;">
+                    ${thumbs}
+                    <div style="position:absolute;left:18px;top:64px;width:150px;height:5px;border-radius:3px;background:var(--surface2);overflow:hidden;">
+                        <div style="width:${clamp(prog * 1.15) * 100}%;height:100%;background:var(--border2);"></div>
+                    </div>
+                    <div style="position:absolute;left:18px;top:75px;width:110px;height:5px;border-radius:3px;background:var(--surface2);overflow:hidden;">
+                        <div style="width:${clamp(prog * 1.4 - 0.2) * 100}%;height:100%;background:var(--border2);"></div>
+                    </div>
+                    <div style="position:absolute;left:18px;top:94px;font:500 11px ${MONO};color:${p.accent};white-space:nowrap;">
+                        ${done ? "plan ready · 216 layers" : "scanning · " + count + " layers"}
+                    </div>
+                    <div style="position:absolute;left:${lerp(cx - 28, cx + 6, 0.5 + 0.5 * Math.sin(t * 3))}px;top:40px;">
+                        ${miniSpiderBadge(p.accent, "Ari")}
+                    </div>
+                </div>
+            `;
+        });
+
+        registerVisual(document.getElementById("step-visual-frame"), (el, t) => {
+            const p = getPalette();
+            const a = (t * Math.PI * 2) / 4;
+            const w = Math.round(145 + 38 * Math.sin(a));
+            const h = Math.round(54 + 14 * Math.sin(a + 0.7));
+            const W = Math.round((w * 6.4) / 8) * 8;
+            const H = Math.round((h * 11.4) / 8) * 8;
+            const handles = [[0, 0], [w, 0], [0, h], [w, h]].map((c) =>
+                `<div style="position:absolute;left:${c[0] - 3.5}px;top:${c[1] - 3.5}px;width:7px;height:7px;background:var(--text);border:1px solid ${p.accent};"></div>`
+            ).join("");
+
+            el.innerHTML = `
+                <div style="position:relative;width:100%;height:100%;overflow:hidden;">
+                    <div style="position:absolute;left:18px;top:16px;width:${w}px;height:${h}px;border:1px solid ${p.accent};background:color-mix(in srgb, ${p.accent} 7%, transparent);">
+                        <div style="position:absolute;left:8px;top:8px;width:${Math.max(20, w * 0.45)}px;height:4px;border-radius:2px;background:var(--text);opacity:0.75;"></div>
+                        <div style="position:absolute;left:8px;top:16px;width:${Math.max(16, w * 0.32)}px;height:4px;border-radius:2px;background:var(--text);opacity:0.75;"></div>
+                        <div style="position:absolute;left:8px;top:27px;width:${Math.max(20, w * 0.6)}px;height:3px;border-radius:2px;background:var(--border2);"></div>
+                        ${handles}
+                    </div>
+                    <div style="position:absolute;left:18px;top:${16 + h + 9}px;">
+                        <span style="display:inline-block;background:${p.chip};color:#fff;font:600 9px ${MONO};padding:2px 6px;border-radius:3px;">${W} × ${H}</span>
+                    </div>
+                    <div style="position:absolute;left:${18 + w + 1}px;top:0;bottom:0;border-left:1px dashed ${p.accent};opacity:0.45;"></div>
+                    <div style="position:absolute;left:${18 + w - 1}px;top:${16 + h - 1}px;">
+                        ${miniSpiderBadge(p.accent, "Bex")}
+                    </div>
+                </div>
+            `;
+        });
+
+        const PHRASES = [
+            "Hello, I’m Hussain — a Web Developer &amp; Designer.",
+            "Standard, Classic, and 3D Websites built to perform.",
+            "Modern web craft with code, creativity &amp; AI.",
+            "Thoughtful details from first draft to launch."
+        ];
+        registerVisual(document.getElementById("step-visual-type"), (el, t) => {
+            const p = getPalette();
+            const tl = PHRASES.map((s) => ({ s, type: s.length * 0.055, hold: 1.5, erase: s.length * 0.022, gap: 0.35 }));
+            const total = tl.reduce((n, x) => n + x.type + x.hold + x.erase + x.gap, 0);
+            let r = t % total;
+            let text = "";
+            let blink = false;
+            for (const x of tl) {
+                const d = x.type + x.hold + x.erase + x.gap;
+                if (r < d) {
+                    if (r < x.type) text = x.s.slice(0, Math.ceil((r / x.type) * x.s.length));
+                    else if (r < x.type + x.hold) { text = x.s; blink = true; }
+                    else if (r < x.type + x.hold + x.erase) text = x.s.slice(0, Math.floor((1 - (r - x.type - x.hold) / x.erase) * x.s.length));
+                    else { text = ""; blink = true; }
+                    break;
+                }
+                r -= d;
+            }
+            const caretOn = !blink || Math.sin(t * 9) > -0.2;
+
+            el.innerHTML = `
+                <div style="position:relative;width:100%;height:100%;overflow:hidden;">
+                    <div style="position:absolute;left:18px;top:16px;right:24px;font:600 15px/1.25 ${DISPLAY};letter-spacing:-0.03em;color:var(--text);">
+                        ${text}<span style="position:relative;display:inline-block;width:2px;height:17px;margin-left:1px;vertical-align:-3px;background:${p.accent};opacity:${caretOn ? 1 : 0};">
+                            <span style="position:absolute;left:6px;top:14px;background:${p.accent};color:#fff;font:700 9px Inter,sans-serif;padding:1px 6px;border-radius:7px;white-space:nowrap;letter-spacing:0;">Dot</span>
+                        </span>
+                    </div>
+                    <div style="position:absolute;left:18px;bottom:26px;width:150px;height:5px;border-radius:3px;background:var(--border2);"></div>
+                    <div style="position:absolute;left:18px;bottom:15px;width:110px;height:5px;border-radius:3px;background:var(--border2);"></div>
+                </div>
+            `;
+        });
+
+        registerVisual(document.getElementById("step-visual-ship"), (el, t) => {
+            const p = getPalette();
+            const s = t % 5.2;
+            const bx = 18, by = 22, bw = 104, bh = 30;
+            const target = { x: bx + bw * 0.55, y: by + bh * 0.55 };
+            const inP = ease(seg(s, 0.2, 1.4));
+            const outP = ease(seg(s, 4.4, 5.1));
+            let cx = lerp(205, target.x, inP);
+            let cy = lerp(115, target.y, inP);
+            if (s > 4.4) { cx = lerp(target.x, 195, outP); cy = lerp(target.y, 110, outP); }
+            const pressed = s > 1.4 && s < 1.65;
+            const publishing = s >= 1.6 && s < 3.1;
+            const published = s >= 3.1;
+            const prog = seg(s, 1.6, 3.1);
+            const label = published ? "Published" : publishing ? "Publishing…" : "Publish";
+
+            el.innerHTML = `
+                <div style="position:relative;width:100%;height:100%;overflow:hidden;">
+                    <div style="position:absolute;left:${bx}px;top:${by}px;width:${bw}px;height:${bh}px;border-radius:7px;background:${p.accent};display:flex;align-items:center;justify-content:center;gap:6px;color:#FFFFFF;font:600 12px Inter,sans-serif;transform:scale(${pressed ? 0.93 : 1});">
+                        ${published ? `<svg width="11" height="11" viewBox="0 0 12 12"><path d="M2 6.5L5 9L10 3" stroke="#FFFFFF" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round" /></svg>` : ""}
+                        ${label}
+                    </div>
+                    <div style="position:absolute;left:18px;top:66px;display:flex;align-items:center;gap:7px;font:500 11px ${MONO};color:var(--muted);white-space:nowrap;">
+                        <span style="width:7px;height:7px;border-radius:4px;background:${p.accent};"></span>
+                        ${published ? "live · hussain.portfolio" : publishing ? "deploying · 3 pages" : "draft · hussain.portfolio"}
+                    </div>
+                    <div style="position:absolute;left:18px;top:88px;width:150px;height:3px;border-radius:2px;background:var(--surface2);overflow:hidden;">
+                        <div style="height:100%;width:${(published ? 1 : prog) * 100}%;background:${p.accent};"></div>
+                    </div>
+                    <div style="position:absolute;left:${cx}px;top:${cy}px;">
+                        ${miniSpiderBadge(p.accent, "Neo", pressed ? 0.88 : 1)}
+                    </div>
+                </div>
+            `;
+        });
+
+        registerVisual(document.getElementById("live-visual-meter"), (el, t) => {
+            const p = getPalette();
+            const v = 142.4 * (1 + 0.06 * Math.sin(t * 1.3) + 0.02 * Math.sin(t * 4.1));
+            const bars = [0, 1, 2, 3, 4, 5, 6, 7].map((i) => {
+                const h = 3 + 9 * (0.5 + 0.5 * Math.sin(t * 3 + i * 0.9));
+                const op = 0.35 + 0.65 * (i / 7);
+                return `<span style="width:3px;border-radius:1px;background:${p.accent};opacity:${op};height:${h}px;"></span>`;
+            }).join("");
+
+            el.innerHTML = `
+                <div style="display:flex;align-items:center;gap:10px;font:500 11px ${MONO};color:var(--text);">
+                    <div style="display:flex;align-items:flex-end;gap:2px;height:12px;">${bars}</div>
+                    <span style="font-variant-numeric:tabular-nums;">${v.toFixed(1)} ops / sec</span>
+                </div>
+            `;
+        });
+
+        registerVisual(document.getElementById("live-visual-breakpoints"), (el, t) => {
+            const p = getPalette();
+            const active = Math.floor((t % 6) / 2);
+            const local = (t % 2) / 2;
+            const devs = [
+                { w: 220, h: 132, l: "Desktop · 1440" },
+                { w: 112, h: 132, l: "Tablet · 810" },
+                { w: 62, h: 120, l: "Phone · 390" }
+            ];
+
+            el.innerHTML = `
+                <div style="display:flex;align-items:flex-end;justify-content:center;gap:16px;width:100%;height:100%;padding:16px;">
+                    ${devs.map((d, i) => {
+                        const on = i === active;
+                        const g = on ? ease(seg(local, 0.08, 0.6)) : 1;
+                        return `
+                            <div style="position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;">
+                                <div style="position:relative;width:${d.w}px;height:${d.h}px;border-radius:6px;background:var(--surface);border:1px solid ${on ? p.accent : "var(--border)"};padding:8px;overflow:hidden;">
+                                    <div style="width:40%;height:6px;border-radius:3px;background:var(--text);opacity:0.8;margin-bottom:5px;"></div>
+                                    <div style="width:${on ? 70 * g : 70}%;height:6px;border-radius:3px;background:var(--text);opacity:0.8;margin-bottom:5px;"></div>
+                                    <div style="width:85%;height:3px;border-radius:2px;background:var(--border2);margin-bottom:6px;"></div>
+                                    <div style="width:${on ? 100 * g : 100}%;height:${d.h - 52}px;border-radius:4px;border:1px solid ${on ? p.accent : "var(--border2)"};background:${on ? `color-mix(in srgb, ${p.accent} 8%, transparent)` : "transparent"};"></div>
+                                </div>
+                                <span style="font:500 10px ${MONO};color:${on ? "var(--text)" : "var(--dim)"};white-space:nowrap;">${d.l}</span>
+                                ${on ? `<div style="position:absolute;left:${d.w - 18 + 4 * Math.sin(t * 4)}px;top:${d.h - 28}px;">${miniSpiderBadge(p.accent, "Eon")}</div>` : ""}
+                            </div>
+                        `;
+                    }).join("")}
+                </div>
+            `;
+        });
+
+        registerVisual(document.getElementById("live-visual-tokens"), (el, t) => {
+            const p = getPalette();
+            const local = t % 1.8;
+            const rows = [
+                ["Background", "var(--bg)"],
+                ["Text", "var(--text)"],
+                ["Muted", "var(--muted)"],
+                ["Accent", p.accent]
+            ];
+
+            el.innerHTML = `
+                <div style="width:100%;height:100%;display:flex;align-items:center;gap:14px;padding:0 16px;font:500 11px ${MONO};position:relative;">
+                    <div style="flex:1;display:flex;flex-direction:column;gap:10px;">
+                        ${rows.map(([n, c], i) => `
+                            <div style="position:relative;display:flex;align-items:center;gap:8px;">
+                                <span style="width:14px;height:14px;border-radius:4px;background:${c};border:1px solid var(--border2);flex-shrink:0;"></span>
+                                <span style="color:var(--text);flex:1;">${n}</span>
+                                <span style="color:var(--dim);font-size:10px;">${i === 3 ? p.accent : "TOKEN"}</span>
+                                ${i === 3 ? `<div style="position:absolute;left:6px;top:7px;">${miniSpiderBadge(p.accent, "Fox", local < 0.18 ? 0.86 : 1)}</div>` : ""}
+                            </div>
+                        `).join("")}
+                    </div>
+                    <div style="position:relative;width:92px;height:96px;border-radius:8px;background:var(--surface);border:1px solid var(--border);padding:10px;display:flex;flex-direction:column;gap:6px;flex-shrink:0;">
+                        <div style="width:70%;height:6px;border-radius:3px;background:var(--text);opacity:0.8;"></div>
+                        <div style="width:90%;height:3px;border-radius:2px;background:var(--border2);"></div>
+                        <div style="width:60%;height:3px;border-radius:2px;background:var(--border2);"></div>
+                        <div style="margin-top:auto;height:18px;border-radius:4px;background:${p.accent};"></div>
+                    </div>
+                    <div style="position:absolute;left:16px;bottom:10px;opacity:${local < 1.1 ? 1 - seg(local, 0.8, 1.1) : 0};">
+                        <span style="display:inline-block;background:${p.chip};color:#fff;font:600 9px ${MONO};padding:2px 6px;border-radius:3px;">1 edit · 48 layers updated</span>
+                    </div>
+                </div>
+            `;
+        });
+
+        const CMS_TITLES = ["Standard websites", "Classic layouts", "3D experiences", "Token sync"];
+        const CMS_DATES = ["Nov 24", "Nov 18", "Nov 11", "Nov 02"];
+        registerVisual(document.getElementById("live-visual-cms"), (el, t) => {
+            const p = getPalette();
+            const k = Math.floor(t / 4);
+            const local = (t % 4) / 4;
+            const slide = 1 - ease(seg(local, 0, 0.12));
+            const typedT = CMS_TITLES[k % 4].slice(0, Math.ceil(CMS_TITLES[k % 4].length * seg(local, 0.12, 0.45)));
+            const slug = typedT.toLowerCase().split(" ").join("-");
+            const rows = [0, 1, 2].map((j) => ({
+                title: j === 0 ? typedT : CMS_TITLES[(k - j + 400) % 4],
+                slug: j === 0 ? slug : CMS_TITLES[(k - j + 400) % 4].toLowerCase().split(" ").join("-"),
+                date: j === 0 ? (local > 0.45 ? CMS_DATES[0] : "") : CMS_DATES[j]
+            }));
+
+            el.innerHTML = `
+                <div style="width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;font:500 11px ${MONO};overflow:hidden;">
+                    <div style="display:flex;gap:10px;padding:9px 16px;border-bottom:1px solid var(--border);color:var(--dim);">
+                        <span style="flex:1.2;">title</span><span style="flex:1;">slug</span><span style="width:48px;text-align:right;">date</span>
+                    </div>
+                    <div style="height:96px;overflow:hidden;">
+                        <div style="transform:translateY(${-32 * slide}px);">
+                            ${rows.map((r, j) => `
+                                <div style="position:relative;display:flex;gap:10px;padding:9px 16px;height:32px;border-bottom:${j < 2 ? "1px solid var(--border)" : "none"};">
+                                    <span style="flex:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text);">${r.title}${j === 0 && local < 0.45 && Math.sin(t * 10) > 0 ? "|" : ""}</span>
+                                    <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted);">${r.slug}</span>
+                                    <span style="width:48px;text-align:right;color:var(--muted);">${r.date}</span>
+                                    ${j === 0 && local > 0.45 ? `<span style="position:absolute;right:12px;top:7px;opacity:${1 - seg(local, 0.85, 1)};background:${p.chip};color:#fff;font:600 9px ${MONO};padding:1px 5px;border-radius:3px;">new</span>` : ""}
+                                </div>
+                            `).join("")}
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        registerVisual(document.getElementById("live-visual-components"), (el, t) => {
+            const p = getPalette();
+            const s = t % 4;
+            const hover = s > 1 && s < 3.1;
+            const pressed = s > 1.9 && s < 2.25;
+            const state = pressed ? 2 : hover ? 1 : 0;
+            const cx = s < 1 ? lerp(170, 82, ease(seg(s, 0.2, 1))) : s > 3.1 ? lerp(82, 170, ease(seg(s, 3.1, 3.9))) : 82;
+            const cy = s < 1 ? lerp(65, 22, ease(seg(s, 0.2, 1))) : s > 3.1 ? lerp(22, 65, ease(seg(s, 3.1, 3.9))) : 22;
+
+            el.innerHTML = `
+                <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;">
+                    <div style="position:relative;width:132px;height:38px;">
+                        <div style="width:132px;height:38px;border-radius:8px;background:${hover ? p.accent : "var(--text)"};color:${hover ? "#FFFFFF" : "var(--bg)"};display:flex;align-items:center;justify-content:center;font:600 13px Inter,sans-serif;transform:scale(${pressed ? 0.95 : hover ? 1.03 : 1});">
+                            Get started
+                        </div>
+                        <div style="position:absolute;inset:-6px;border:1px dashed ${p.accent};border-radius:4px;opacity:0.65;"></div>
+                        <div style="position:absolute;left:${cx}px;top:${cy}px;">
+                            ${miniSpiderBadge(p.accent, "Hex", pressed ? 0.88 : 1)}
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:6px;">
+                        ${["Default", "Hover", "Pressed"].map((v, i) => `
+                            <span style="font:600 10px ${MONO};padding:3px 8px;border-radius:4px;background:${state === i ? p.chip : "var(--surface2)"};color:${state === i ? "#FFFFFF" : "var(--dim)"};">${v}</span>
+                        `).join("")}
+                    </div>
+                </div>
+            `;
+        });
+
+        const SEO_PAGES = [
+            ["hussain.portfolio › projects", "Projects — Hussain"],
+            ["hussain.portfolio › about", "About — Hussain"]
+        ];
+        registerVisual(document.getElementById("live-visual-seo"), (el, t) => {
+            const p = getPalette();
+            const k = Math.floor(t / 4) % 2;
+            const local = (t % 4) / 4;
+            const [url, title] = SEO_PAGES[k];
+            const typed = title.slice(0, Math.ceil(title.length * seg(local, 0.05, 0.4)));
+            const d1 = seg(local, 0.35, 0.6);
+            const d2 = seg(local, 0.5, 0.75);
+
+            el.innerHTML = `
+                <div style="width:100%;height:100%;padding:16px 18px;display:flex;flex-direction:column;justify-content:center;gap:6px;position:relative;">
+                    <span style="font:500 10px ${MONO};color:${p.accent};">${url}</span>
+                    <span style="font:500 15px Inter,sans-serif;color:var(--text);white-space:nowrap;">
+                        ${typed}<span style="opacity:${local < 0.4 && Math.sin(t * 10) > 0 ? 1 : 0};color:${p.accent};">|</span>
+                    </span>
+                    <div style="width:${100 * d1}%;height:5px;border-radius:3px;background:var(--border2);"></div>
+                    <div style="width:${80 * d2}%;height:5px;border-radius:3px;background:var(--border2);"></div>
+                    <div style="display:flex;align-items:center;gap:8px;padding-top:6px;">
+                        <div class="og-shimmer" style="width:48px;height:28px;border-radius:4px;border:1px solid ${p.accent};"></div>
+                        <span style="font:500 10px ${MONO};color:var(--dim);">title ${typed.length}/60 · og:image ✓</span>
+                    </div>
+                    <div style="position:absolute;left:${20 + Math.min(typed.length, 24) * 6.8}px;top:54px;">
+                        ${miniSpiderBadge(p.accent, "Lyn", local < 0.45 ? 1 : 1 - seg(local, 0.45, 0.55))}
+                    </div>
+                </div>
+            `;
+        });
+
+        /* ------------------------------------------------------------------
+           MINI SPIDER BUILDER ENGINE (Spins delicate web threads behind text & cards)
+        ------------------------------------------------------------------ */
+        (function initSpiderBuildEngine() {
+            const canvas = document.getElementById("swarm-canvas");
+            const preloader = document.getElementById("swarm-preloader");
+            const hudEl = document.getElementById("swarm-hud");
+            const hudStatus = document.getElementById("hud-status");
+            const hudBar = document.getElementById("hud-progress-bar");
+            const hudActionBtn = document.getElementById("hud-action-btn");
+            const hudCloseBtn = document.getElementById("hud-close-btn");
+
+            if (!canvas) return;
+            const ctx = canvas.getContext("2d");
+
+            let vw = window.innerWidth;
+            let vh = window.innerHeight;
+            const dpr = Math.min(2, window.devicePixelRatio || 1);
+
+            function resize() {
+                vw = window.innerWidth;
+                vh = window.innerHeight;
+                canvas.width = Math.round(vw * dpr);
+                canvas.height = Math.round(vh * dpr);
+                canvas.style.width = vw + "px";
+                canvas.style.height = vh + "px";
+            }
+            resize();
+            window.addEventListener("resize", resize);
+
+            const builderApi = window.SPIDER_BUILDER || {};
+            const spiders = builderApi.spiderList || [];
+            const spiderCount = spiders.length || 12;
+            const initialColors = getAgentColors(spiderCount);
+
+            const builders = spiders.length
+                ? spiders.map((sp, i) => ({
+                    spider: sp,
+                    color: initialColors[i],
+                    name: NAMES[i % NAMES.length],
+                    job: null,
+                    box: null,
+                    phase: "idle",
+                    t0: 0,
+                    cx: 0,
+                    cy: 0,
+                    ch: 0
+                }))
+                : Array.from({ length: spiderCount }, (_, i) => ({
+                    spider: { x: vw / 2, y: vh / 2, tx: vw / 2, ty: vh / 2, job: null },
+                    color: initialColors[i],
+                    name: NAMES[i % NAMES.length],
+                    job: null,
+                    box: null,
+                    phase: "idle",
+                    t0: 0,
+                    cx: 0,
+                    cy: 0,
+                    ch: 0
+                }));
+
+            window.addEventListener("portfolio-theme-change", () => {
+                const updated = getAgentColors(spiderCount);
+                builders.forEach((b, i) => { b.color = updated[i]; });
+            });
+
+            let jobs = [];
+            let boxes = [];
+            let phase = "scan";
+            let phaseStart = performance.now();
+            let buildStart = 0;
+            let buildEnd = 0;
+            const SPEED = 2.6;
+            const BUILD_LINE = 0.88;
+
+            let mx = -1;
+            let my = -1;
+            let touring = false;
+            let chrome = 0;
+            let lastBusy = 0;
+            const scanMs = 1350;
+
+            function rr(x, y, w, h, r) {
+                const q = Math.min(r, h / 2, w / 2);
+                ctx.beginPath();
+                ctx.moveTo(x + q, y);
+                ctx.arcTo(x + w, y, x + w, y + h, q);
+                ctx.arcTo(x + w, y + h, x, y + h, q);
+                ctx.arcTo(x, y + h, x, y, q);
+                ctx.arcTo(x, y, x + w, y, q);
+                ctx.closePath();
+            }
+
+            function collectJobs() {
+                const els = Array.from(document.querySelectorAll("[data-swarm-item]"));
+                return els.map((el) => ({
+                    el,
+                    kind: el.getAttribute("data-swarm-kind") || "leaf",
+                    state: 0,
+                    chars: (el.textContent || "").trim().length
+                }));
+            }
+
+            function restoreJob(j) {
+                j.el.removeAttribute("data-swarm-state");
+                j.el.style.clipPath = "";
+            }
+
+            // Weave a delicate silk web lattice right behind a revealed text block or card
+            function weaveBehindElement(el, kind, now) {
+                if (!builderApi.addSilkThread) return;
+                const r = el.getBoundingClientRect();
+                if (r.width < 8 || r.height < 8) return;
+
+                const cols = kind === "text" ? Math.min(6, Math.max(3, Math.floor(r.width / 80))) : 3;
+                const rows = kind === "text" ? 2 : 3;
+
+                for (let row = 0; row < rows; row++) {
+                    const y = r.top + (r.height * (row + 0.5)) / rows;
+                    for (let col = 0; col < cols; col++) {
+                        const x1 = r.left + (r.width * col) / cols;
+                        const x2 = r.left + (r.width * (col + 1)) / cols;
+                        builderApi.addSilkThread(x1, y, x2, y, 2.2, false, now);
+
+                        // Cross-bracing silk threads for a delicate spiderweb mesh behind text/cards
+                        if (row + 1 < rows) {
+                            const yNext = r.top + (r.height * (row + 1.5)) / rows;
+                            builderApi.addSilkThread(x1, y, x2, yNext, 1.0, true, now);
+                            builderApi.addSilkThread(x2, y, x1, yNext, 1.0, true, now);
+                        }
+                    }
+                }
+            }
+
+            function startBuild() {
+                jobs.forEach(restoreJob);
+                jobs = collectJobs();
+                jobs.forEach((j) => j.el.setAttribute("data-swarm-state", "hidden"));
+                boxes = [];
+                if (builderApi.clearSilkThreads) builderApi.clearSilkThreads();
+
+                builders.forEach((b) => {
+                    b.job = null;
+                    b.box = null;
+                    b.phase = "idle";
+                    b.spider.job = null;
+                    b.spider.x = vw / 2;
+                    b.spider.y = vh / 2;
+                    b.spider.tx = vw / 2;
+                    b.spider.ty = vh / 2;
+                });
+                buildEnd = 0;
+                phase = "scan";
+                phaseStart = performance.now();
+                buildStart = 0;
+
+                if (preloader) {
+                    preloader.style.opacity = "1";
+                    preloader.style.visibility = "visible";
+                    preloader.style.pointerEvents = "auto";
+                }
+                if (hudEl) hudEl.style.display = "flex";
+            }
+
+            function skipBuild() {
+                jobs.forEach((j) => {
+                    restoreJob(j);
+                    j.state = 2;
+                });
+                builders.forEach((b) => {
+                    b.job = null;
+                    b.box = null;
+                    b.phase = "idle";
+                    b.spider.job = null;
+                });
+                boxes = [];
+                if (phase === "scan") {
+                    phase = "build";
+                    buildStart = performance.now();
+                }
+                if (preloader) {
+                    preloader.style.opacity = "0";
+                    preloader.style.visibility = "hidden";
+                    preloader.style.pointerEvents = "none";
+                }
+                if (!buildEnd) buildEnd = performance.now();
+            }
+
+            function replayBuild() {
+                touring = false;
+                window.scrollTo({ top: 0, behavior: "instant" });
+                startBuild();
+            }
+
+            function finishJob(b, now) {
+                const j = b.job;
+                if (j) {
+                    weaveBehindElement(j.el, j.kind, now);
+                    restoreJob(j);
+                    j.state = 2;
+                }
+                if (b.box) b.box.doneAt = now;
+                b.job = null;
+                b.box = null;
+                b.phase = "idle";
+                b.spider.job = null;
+            }
+
+            window.addEventListener("pointermove", (e) => {
+                mx = e.clientX;
+                my = e.clientY;
+            }, { passive: true });
+
+            window.addEventListener("keydown", (e) => {
+                touring = false;
+                if (e.key === "Escape") skipBuild();
+            });
+
+            window.addEventListener("wheel", () => { touring = false; }, { passive: true });
+            window.addEventListener("touchstart", () => { touring = false; }, { passive: true });
+
+            document.querySelectorAll("[data-replay-trigger]").forEach((btn) => {
+                btn.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    replayBuild();
+                });
+            });
+
+            hudActionBtn?.addEventListener("click", () => {
+                const isDone = phase === "build" && buildEnd > 0;
+                if (isDone) {
+                    replayBuild();
+                } else {
+                    touring = !touring;
+                }
+            });
+
+            hudCloseBtn?.addEventListener("click", () => {
+                skipBuild();
+                if (hudEl) hudEl.style.display = "none";
+            });
+
+            let lastNow = performance.now();
+            let frame = 0;
+            let hudLastUpdate = 0;
+
+            function tick(now) {
+                requestAnimationFrame(tick);
+                const dt = Math.min(0.05, Math.max(0.001, (now - lastNow) / 1000));
+                lastNow = now;
+                frame++;
+
+                const p = getPalette();
+                const accentColor = p.accent;
+                const chipColor = p.chip;
+                const tagTextColor = document.documentElement.dataset.mode === "bw" ? "#050505" : "#FFFFFF";
+
+                const sec = now / 1000;
+                if (frame % 2 === 0) {
+                    for (const v of visualRegistry) {
+                        if (v.isVisible()) v.renderFn(v.el, sec);
+                    }
+                }
+
+                const lineY = vh * BUILD_LINE;
+                let scanCount = 0;
+
+                if (phase === "scan") {
+                    const t = (now - phaseStart) / (scanMs / SPEED);
+                    scanCount = Math.round(Math.min(1, t) * jobs.length);
+                    const R = Math.min(130, Math.min(vw, vh) * 0.2);
+                    const base = (now / 1000) * 2.6;
+
+                    builders.forEach((b, i) => {
+                        const th = base + (i / spiderCount) * Math.PI * 2;
+                        b.spider.job = "scanning";
+                        b.spider.tx = vw / 2 + Math.cos(th) * R;
+                        b.spider.ty = vh / 2 + Math.sin(th) * R;
+                    });
+
+                    if (t >= 1) {
+                        phase = "build";
+                        buildStart = now;
+                        builders.forEach((b) => { b.spider.job = null; });
+                        if (preloader) {
+                            preloader.style.opacity = "0";
+                            preloader.style.visibility = "hidden";
+                            preloader.style.pointerEvents = "none";
+                        }
+                    }
+                } else {
+                    const free = builders.filter((b) => !b.job);
+                    if (free.length && frame % 2 === 0) {
+                        for (const j of jobs) {
+                            if (!free.length) break;
+                            if (j.state !== 0) continue;
+                            const r = j.el.getBoundingClientRect();
+                            if (r.top >= lineY) continue;
+
+                            let bi = 0;
+                            let bd = Infinity;
+                            free.forEach((b, i) => {
+                                const d = (b.spider.x - r.left) ** 2 + (b.spider.y - r.top) ** 2;
+                                if (d < bd) {
+                                    bd = d;
+                                    bi = i;
+                                }
+                            });
+
+                            const builder = free.splice(bi, 1)[0];
+                            const box = { job: j, p: 0, doneAt: 0 };
+                            boxes.push(box);
+                            j.state = 1;
+                            builder.job = j;
+                            builder.box = box;
+                            builder.phase = "travel";
+                            builder.t0 = now;
+                            builder.spider.job = j;
+                            builder.spider.prevSilkX = builder.spider.x;
+                            builder.spider.prevSilkY = builder.spider.y;
+                        }
+                    }
+
+                    builders.forEach((b) => {
+                        const j = b.job;
+                        if (!j) {
+                            b.spider.job = null;
+                            return;
+                        }
+
+                        lastBusy = now;
+                        const r = j.el.getBoundingClientRect();
+                        const box = b.box;
+
+                        if (b.phase === "travel") {
+                            b.spider.tx = r.left;
+                            b.spider.ty = r.top;
+                            if (Math.hypot(b.spider.x - r.left, b.spider.y - r.top) < 16 || now - b.t0 > 500 / SPEED) {
+                                b.phase = "draw";
+                                b.t0 = now;
+                            }
+                        } else if (b.phase === "draw") {
+                            const t = Math.min(1, (now - b.t0) / (300 / SPEED));
+                            const e = ease(t);
+                            box.p = e;
+                            b.spider.tx = r.left + r.width * e;
+                            b.spider.ty = r.top + r.height * e;
+
+                            if (t >= 1) {
+                                j.el.setAttribute("data-swarm-state", "building");
+                                j.el.style.clipPath = "inset(0 100% 0 0)";
+                                b.phase = j.kind === "text" ? "type" : "fill";
+                                b.t0 = now;
+                            }
+                        } else if (b.phase === "type") {
+                            const dur = Math.min(1050, Math.max(220, j.chars * 11)) / SPEED;
+                            const t = ease(Math.min(1, (now - b.t0) / dur));
+                            j.el.style.clipPath = `inset(0 ${(1 - t) * 100}% 0 0)`;
+                            b.cx = r.left + r.width * t;
+                            b.cy = r.top + r.height * 0.15;
+                            b.ch = Math.min(28, r.height * 0.7);
+                            b.spider.tx = b.cx;
+                            b.spider.ty = r.top + r.height * 0.5 + Math.sin(now * 0.02) * 3;
+                            if (t >= 1) finishJob(b, now);
+                        } else if (b.phase === "fill") {
+                            const t = ease(Math.min(1, (now - b.t0) / (320 / SPEED)));
+                            j.el.style.clipPath = `inset(0 ${(1 - t) * 100}% 0 0)`;
+                            b.spider.tx = r.left + r.width * t;
+                            b.spider.ty = r.top + r.height * 0.5 + Math.cos(now * 0.02) * 4;
+                            if (t >= 1) finishJob(b, now);
+                        }
+                    });
+                }
+
+                if (touring) {
+                    window.scrollBy(0, 240 * dt);
+                    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) {
+                        touring = false;
+                    }
+                }
+
+                const busy = phase === "build" && now - lastBusy < 850;
+                chrome += ((busy ? 1 : 0) - chrome) * Math.min(1, dt * 5);
+
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                ctx.clearRect(0, 0, vw, vh);
+
+                boxes = boxes.filter((b) => !b.doneAt || now - b.doneAt < 250 / SPEED + 450);
+                const liveBoxes = [];
+
+                for (const b of boxes) {
+                    const r = b.job.el.getBoundingClientRect();
+                    const w = r.width * b.p;
+                    const h = r.height * b.p;
+                    if (!b.doneAt) liveBoxes.push({ l: r.left, t: r.top, w, h });
+                    if (r.bottom < -40 || r.top > vh + 40) continue;
+
+                    const al = b.doneAt ? Math.max(0, 1 - (now - b.doneAt - 250 / SPEED) / 400) : 1;
+                    if (al <= 0) continue;
+
+                    const x0 = Math.round(r.left) + 0.5;
+                    const y0 = Math.round(r.top) + 0.5;
+
+                    if (!b.doneAt && chrome > 0.05) {
+                        ctx.save();
+                        ctx.globalAlpha = 0.2 * chrome;
+                        ctx.strokeStyle = accentColor;
+                        ctx.setLineDash([2, 3]);
+                        ctx.beginPath();
+                        ctx.moveTo(0, y0); ctx.lineTo(vw, y0);
+                        ctx.moveTo(0, y0 + h); ctx.lineTo(vw, y0 + h);
+                        ctx.moveTo(x0, 0); ctx.lineTo(x0, vh);
+                        ctx.moveTo(x0 + w, 0); ctx.lineTo(x0 + w, vh);
+                        ctx.stroke();
+                        ctx.restore();
+                    }
+
+                    ctx.globalAlpha = al;
+                    ctx.strokeStyle = accentColor;
+                    ctx.lineWidth = 1;
+                    ctx.strokeRect(x0, y0, Math.round(w), Math.round(h));
+
+                    const corners = [[x0, y0], [x0 + w, y0], [x0, y0 + h], [x0 + w, y0 + h]];
+                    for (const c of corners) {
+                        ctx.fillStyle = "#ffffff";
+                        ctx.fillRect(c[0] - 2.5, c[1] - 2.5, 5, 5);
+                        ctx.strokeRect(c[0] - 2.5, c[1] - 2.5, 5, 5);
+                    }
+
+                    const label = `${Math.round(w)} × ${Math.round(h)}`;
+                    ctx.font = `600 9px ${MONO}`;
+                    const tw = ctx.measureText(label).width;
+                    const bw = tw + 10;
+                    const bx = x0 + w / 2 - bw / 2;
+                    const by = y0 + h + 7;
+                    rr(ctx, bx, by, bw, 14, 3);
+                    ctx.fillStyle = chipColor;
+                    ctx.fill();
+                    ctx.fillStyle = "#ffffff";
+                    ctx.textBaseline = "middle";
+                    ctx.fillText(label, bx + 5, by + 7.5);
+                    ctx.textBaseline = "alphabetic";
+                }
+                ctx.globalAlpha = 1;
+
+                if (chrome > 0.01 && vw >= 640) {
+                    const T = 18;
+                    const sy = window.scrollY;
+                    ctx.globalAlpha = chrome;
+                    ctx.fillStyle = "rgba(10,10,12,0.96)";
+                    ctx.fillRect(0, 0, vw, T);
+                    ctx.fillRect(0, 0, T, vh);
+
+                    ctx.globalAlpha = chrome * 0.6;
+                    ctx.fillStyle = accentColor;
+                    for (const b of liveBoxes) {
+                        ctx.fillRect(b.l, 0, b.w, T);
+                        ctx.fillRect(0, b.t, T, b.h);
+                    }
+
+                    ctx.globalAlpha = chrome;
+                    ctx.strokeStyle = "#353b47";
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    for (let x = 0; x < vw; x += 10) {
+                        const len = x % 100 === 0 ? T : x % 50 === 0 ? 7 : 4;
+                        ctx.moveTo(x + 0.5, T - len);
+                        ctx.lineTo(x + 0.5, T);
+                    }
+                    for (let y = -(sy % 10); y < vh; y += 10) {
+                        const v = Math.round(y + sy);
+                        const len = v % 100 === 0 ? T : v % 50 === 0 ? 7 : 4;
+                        ctx.moveTo(T - len, Math.round(y) + 0.5);
+                        ctx.lineTo(T, Math.round(y) + 0.5);
+                    }
+                    ctx.stroke();
+
+                    ctx.fillStyle = "#7a8291";
+                    ctx.font = `500 8px ${MONO}`;
+                    for (let x = 100; x < vw; x += 100) ctx.fillText(String(x), x + 3, 9);
+                    for (let y = -(sy % 100); y < vh; y += 100) {
+                        const v = Math.round(y + sy);
+                        if (v <= 0) continue;
+                        ctx.save();
+                        ctx.translate(10, y - 3);
+                        ctx.rotate(-Math.PI / 2);
+                        ctx.fillText(String(v), 0, 0);
+                        ctx.restore();
+                    }
+
+                    ctx.fillStyle = "#1d2129";
+                    ctx.fillRect(0, T, vw, 1);
+                    ctx.fillRect(T, 0, 1, vh);
+
+                    ctx.globalAlpha = chrome * 0.85;
+                    ctx.fillStyle = accentColor;
+                    ctx.fillRect(0, Math.round(lineY), vw, 1);
+                    ctx.font = `600 8px ${MONO}`;
+                    ctx.textAlign = "right";
+                    ctx.fillText("BUILD LINE", vw - 14, lineY - 5);
+                    ctx.textAlign = "left";
+                    ctx.globalAlpha = 1;
+                }
+
+                for (const b of builders) {
+                    if (b.phase === "type") {
+                        ctx.fillStyle = b.color;
+                        ctx.fillRect(b.cx, b.cy, 1.5, b.ch);
+                    }
+                    if (b.job) {
+                        const sx = b.spider.x + 12;
+                        const sy = b.spider.y + 12;
+                        ctx.font = "700 9px Inter, system-ui, sans-serif";
+                        const tw = ctx.measureText(b.name).width;
+                        rr(ctx, sx, sy, tw + 12, 14, 7);
+                        ctx.fillStyle = b.color;
+                        ctx.fill();
+                        ctx.fillStyle = tagTextColor;
+                        ctx.textBaseline = "middle";
+                        ctx.fillText(b.name, sx + 6, sy + 7.5);
+                        ctx.textBaseline = "alphabetic";
+                    }
+                }
+
+                if (now - hudLastUpdate > 90 && hudStatus && hudBar && hudActionBtn) {
+                    hudLastUpdate = now;
+                    const built = jobs.filter((j) => j.state === 2).length;
+                    if (!buildEnd && phase === "build" && built === jobs.length && jobs.length > 0) {
+                        buildEnd = now;
+                    }
+
+                    const isDone = phase === "build" && buildEnd > 0;
+                    const pct = phase === "scan"
+                        ? (jobs.length ? scanCount / jobs.length : 0)
+                        : (jobs.length ? built / jobs.length : 1);
+
+                    hudBar.style.width = `${Math.round(pct * 100)}%`;
+
+                    if (phase === "scan") {
+                        hudStatus.innerHTML = `<span>Mini spiders scanning… <strong class="text-primary font-semibold">${scanCount}</strong> layers</span>`;
+                        hudActionBtn.textContent = "Tour";
+                    } else if (isDone) {
+                        const secElapsed = Math.max(0.4, (buildEnd - buildStart) / 1000).toFixed(1);
+                        hudStatus.innerHTML = `<span>Spun <strong class="text-primary font-semibold">${jobs.length}</strong> layers in ${secElapsed}s</span>`;
+                        hudActionBtn.textContent = "Replay";
+                    } else {
+                        const colors = getAgentColors(5);
+                        const avatars = colors.slice(0, 5).map((c, i) =>
+                            `<span style="width:15px;height:15px;border-radius:8px;background:${c};margin-left:${i ? -5 : 0}px;border:1.5px solid var(--surface);color:${tagTextColor};font:700 8px Inter,sans-serif;display:inline-flex;align-items:center;justify-content:center;">${NAMES[i][0]}</span>`
+                        ).join("");
+                        hudStatus.innerHTML = `
+                            <span class="hidden sm:inline-flex items-center">${avatars}</span>
+                            <span class="text-dim hidden md:inline">${spiderCount} mini spiders</span>
+                            <span class="text-primary">${built} / ${jobs.length} layers</span>
+                        `;
+                        hudActionBtn.textContent = touring ? "Pause" : "Tour";
+                    }
+                }
+            }
+
+            window.addEventListener("load", () => {
+                startBuild();
+                requestAnimationFrame(tick);
+            });
+        })();
+    })();
+    </script>
+</body>
+</html>
